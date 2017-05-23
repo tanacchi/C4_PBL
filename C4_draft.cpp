@@ -6,12 +6,6 @@
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
 
-enum class Stone {
-  Space,
-  Red,
-  Blue
-};
-
 enum class Task {
   Init,
   Show,
@@ -20,6 +14,13 @@ enum class Task {
   Judge,
   Ed
 };
+
+enum class Stone {
+  Space,
+  Red,
+  Blue
+};
+
 
 class Plate {
   std::vector <std::vector <Stone> > plate;
@@ -32,7 +33,7 @@ public:
   Task init();
   Task show() const;
   char convert_stone_to_char(Stone stone) const;
-  void insert(int input_x);
+  bool insert(int input_x);
   bool can_drop(int x, int y) const;
   void switch_active_stone();
   bool can_continue() const;
@@ -71,7 +72,7 @@ Task Plate::init() {
   return Task::Show;
 }
 
-void Plate::show() const {
+Task Plate::show() const {
   std::cout << "-----------------" << std::endl;
   std::cout << "| ";
   for (int i = 0; i < PLATE_WIDTH; i++) std::cout << i << ' ';
@@ -93,10 +94,10 @@ char Plate::convert_stone_to_char(Stone stone) const {
     ' ';
 }
 
-void Plate::insert(int input_x) {
-  if (plate[0][input_x] != Stone::Space) return;
+bool Plate::insert(int input_x) {
+  if (plate[0][input_x] != Stone::Space) return false;
   for (int y = 0; y < PLATE_HEIGHT; y++) {
-    if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return; };
+    if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return true; };
   }
 }
 
@@ -143,16 +144,16 @@ int Plate::get_length(int x, int y, int dx, int dy) const {
 int main() {
 
   srand((unsigned)time(NULL));
-  Task task {Op};  
-  Plate plate();
+  Task task {Task::Init};  
+  Plate plate;
 
   plate.show();
 
   while (plate.can_continue()) { 
     int input_x;
-    std::cout << "Input hand !!         >>>>>>> " << std::flush;
-    std::cin >> input_x;
-    // input_x = rand()%7;
+    // std::cout << "Input hand !!         >>>>>>> " << std::flush;
+    // std::cin >> input_x;
+    input_x = rand()%7;
     plate.insert(input_x);
 
     plate.show();

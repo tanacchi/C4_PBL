@@ -7,9 +7,18 @@
 #define PLATE_WIDTH  7
 
 enum class Stone {
-  SPACE,
-  RED,
-  BLUE
+  Space,
+  Red,
+  Blue
+};
+
+enum class Task {
+  Init,
+  Show,
+  Set,
+  Insert,
+  Judge,
+  Ed
 };
 
 class Plate {
@@ -20,8 +29,8 @@ public:
   Plate(const Plate& plate);
   const Plate& operator=(const Plate& src);
   ~Plate();
-  void init();
-  void show() const;
+  Task init();
+  Task show() const;
   char convert_stone_to_char(Stone stone) const;
   void insert(int input_x);
   bool can_drop(int x, int y) const;
@@ -34,7 +43,7 @@ public:
 
 Plate::Plate()
   : plate {std::vector<std::vector<Stone> > (PLATE_HEIGHT, std::vector<Stone> (PLATE_WIDTH))},
-    active_stone {Stone::RED}
+    active_stone {Stone::Red}
 {
   init();
 }
@@ -55,10 +64,11 @@ Plate::~Plate()
 {
 }
 
-void Plate::init() {
+Task Plate::init() {
   for (int i = 0; i < PLATE_HEIGHT; i++)
     for (int j = 0; j < PLATE_WIDTH; j++)
-      plate[i][j] = Stone::SPACE;
+      plate[i][j] = Stone::Space;
+  return Task::Show;
 }
 
 void Plate::show() const {
@@ -73,35 +83,36 @@ void Plate::show() const {
     std::cout << "|";
   }
   std::cout << "-----------------" << std::endl;
+  return Task::Set;
 }
 
 char Plate::convert_stone_to_char(Stone stone) const {
   return
-    (stone == Stone::RED)  ? 'O':
-    (stone == Stone::BLUE) ? 'X':
+    (stone == Stone::Red)  ? 'O':
+    (stone == Stone::Blue) ? 'X':
     ' ';
 }
 
 void Plate::insert(int input_x) {
-  if (plate[0][input_x] != Stone::SPACE) return;
+  if (plate[0][input_x] != Stone::Space) return;
   for (int y = 0; y < PLATE_HEIGHT; y++) {
     if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return; };
   }
 }
 
 bool Plate::can_drop(int x, int y) const {
-  return (y < PLATE_HEIGHT-1) && (plate[y+1][x] == Stone::SPACE);
+  return (y < PLATE_HEIGHT-1) && (plate[y+1][x] == Stone::Space);
 }
 
 void Plate::switch_active_stone() {
-  active_stone = (active_stone == Stone::RED) ? Stone::BLUE : Stone::RED;
+  active_stone = (active_stone == Stone::Red) ? Stone::Blue : Stone::Red;
 }
 
 bool Plate::can_continue() const {
   int count = 0;
   for (int i = 0; i < PLATE_HEIGHT; i++)
     for (int j = 0; j < PLATE_WIDTH; j++)
-      if (plate[i][j] == Stone::SPACE) count++;
+      if (plate[i][j] == Stone::Space) count++;
   return (count > 0);
 }
 
@@ -132,10 +143,9 @@ int Plate::get_length(int x, int y, int dx, int dy) const {
 int main() {
 
   srand((unsigned)time(NULL));
-  
-  Plate plate;
+  Task task {Op};  
+  Plate plate();
 
-  plate.init();
   plate.show();
 
   while (plate.can_continue()) { 
@@ -149,5 +159,6 @@ int main() {
     if (plate.is_game_finish()) break;
     plate.switch_active_stone();
   }
+
   return 0;
 }

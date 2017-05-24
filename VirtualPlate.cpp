@@ -1,45 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <stdlib.h>
-#include <time.h>
-
-#define PLATE_HEIGHT 6
-#define PLATE_WIDTH  7
-
-enum class Task {
-  Init,
-  Show,
-  Set,
-  Insert,
-  Judge,
-  Ed
-};
-
-enum class Stone {
-  Space,
-  Red,
-  Blue
-};
-
-class VirtualPlate {
-  std::vector <std::vector <Stone> > plate;
-  Stone active_stone;
-public:
-  VirtualPlate();
-  VirtualPlate(const VirtualPlate& plate);
-  const VirtualPlate& operator=(const VirtualPlate& src);
-  ~VirtualPlate() = default;
-  void init();
-  void insert(int input_x);
-  bool can_drop(int x, int y) const;
-  void switch_active_stone();
-  bool can_continue() const;
-  bool is_inside_plate(int x, int y) const;
-  bool is_game_finish() const;
-  int get_length(int x, int y, int dx, int dy) const;
-  bool is_valid_hand(int x) const;
-  friend void show(VirtualPlate game_plate);
-};
+#include "VirtualPlate.h"
 
 VirtualPlate::VirtualPlate()
   : plate {std::vector<std::vector<Stone> > (PLATE_HEIGHT, std::vector<Stone> (PLATE_WIDTH))},
@@ -134,27 +94,4 @@ int VirtualPlate::get_length(int x, int y, int dx, int dy) const {
     if (plate[y+i*dy][x+i*dx] == active_stone) continue;
     else break;
   return i;
-}
-
-int main() {
-
-  srand((unsigned)time(NULL));
-  
-  VirtualPlate plate;
-  show(plate);
-
-  while (plate.can_continue()) { 
-      int input_x;
-    do {
-      // std::cout << "Input hand !!         >>>>>>> " << std::flush;
-      // std::cin >> input_x;
-      input_x = rand()%7;
-    } while (!plate.is_valid_hand(input_x));
-    plate.insert(input_x);
-    show(plate);
-    if (plate.is_game_finish()) break;
-    plate.switch_active_stone();
-  }
-
-  return 0;
 }

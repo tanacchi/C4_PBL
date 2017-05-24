@@ -1,3 +1,6 @@
+#ifndef VirtualPlate_h
+#define VirtualPlate_h
+
 #include <vector>
 
 #define PLATE_HEIGHT 6
@@ -28,3 +31,5 @@ public:
   bool is_valid_hand(int x) const;
   friend void show(VirtualPlate game_plate);
 };
+
+#endif

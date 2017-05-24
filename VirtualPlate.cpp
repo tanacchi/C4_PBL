@@ -21,7 +21,6 @@ enum class Stone {
   Blue
 };
 
-
 class VirtualPlate {
   std::vector <std::vector <Stone> > plate;
   Stone active_stone;
@@ -29,17 +28,17 @@ public:
   VirtualPlate();
   VirtualPlate(const VirtualPlate& plate);
   const VirtualPlate& operator=(const VirtualPlate& src);
-  ~VirtualPlate();
-  Task init();
-  Task show() const;
-  char convert_stone_to_char(Stone stone) const;
-  bool insert(int input_x);
+  ~VirtualPlate() = default;
+  void init();
+  void insert(int input_x);
   bool can_drop(int x, int y) const;
   void switch_active_stone();
   bool can_continue() const;
   bool is_inside_plate(int x, int y) const;
   bool is_game_finish() const;
   int get_length(int x, int y, int dx, int dy) const;
+  bool is_valid_hand(int x) const;
+  friend void show(VirtualPlate game_plate);
 };
 
 VirtualPlate::VirtualPlate()
@@ -61,18 +60,20 @@ const VirtualPlate& VirtualPlate::operator=(const VirtualPlate& src) {
   return *this;
 }  
 
-VirtualPlate::~VirtualPlate()
-{
-}
-
-Task VirtualPlate::init() {
+void VirtualPlate::init() {
   for (int i = 0; i < PLATE_HEIGHT; i++)
     for (int j = 0; j < PLATE_WIDTH; j++)
       plate[i][j] = Stone::Space;
-  return Task::Show;
 }
 
-Task VirtualPlate::show() const {
+char convert_stone_to_char(Stone stone) {
+  return
+    (stone == Stone::Red)  ? 'O':
+    (stone == Stone::Blue) ? 'X':
+    ' ';
+}
+
+void show(VirtualPlate game_plate) {
   std::cout << "-----------------" << std::endl;
   std::cout << "| ";
   for (int i = 0; i < PLATE_WIDTH; i++) std::cout << i << ' ';
@@ -80,25 +81,19 @@ Task VirtualPlate::show() const {
   for (int y = 0; y < PLATE_HEIGHT; std::cout.put('\n'), y++) {
     std::cout << "| ";
     for (int x = 0; x < PLATE_WIDTH; std::cout.put(' '), x++)
-      std::cout.put(convert_stone_to_char(plate[y][x]));
+      std::cout.put(convert_stone_to_char(game_plate.plate[y][x]));
     std::cout << "|";
   }
   std::cout << "-----------------" << std::endl;
-  return Task::Set;
 }
 
-char VirtualPlate::convert_stone_to_char(Stone stone) const {
-  return
-    (stone == Stone::Red)  ? 'O':
-    (stone == Stone::Blue) ? 'X':
-    ' ';
+bool VirtualPlate::is_valid_hand(int x) const {
+  return (plate[0][x] == Stone::Space) ;
 }
 
-bool VirtualPlate::insert(int input_x) {
-  if (plate[0][input_x] != Stone::Space) return false;
-  for (int y = 0; y < PLATE_HEIGHT; y++) {
-    if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return true; };
-  }
+void VirtualPlate::insert(int input_x) {
+  for (int y = 0; y < PLATE_HEIGHT; y++)
+    if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return; }
 }
 
 bool VirtualPlate::can_drop(int x, int y) const {
@@ -144,19 +139,19 @@ int VirtualPlate::get_length(int x, int y, int dx, int dy) const {
 int main() {
 
   srand((unsigned)time(NULL));
-  Task task {Task::Init};  
+  
   VirtualPlate plate;
-
-  plate.show();
+  show(plate);
 
   while (plate.can_continue()) { 
-    int input_x;
-    // std::cout << "Input hand !!         >>>>>>> " << std::flush;
-    // std::cin >> input_x;
-    input_x = rand()%7;
+      int input_x;
+    do {
+      // std::cout << "Input hand !!         >>>>>>> " << std::flush;
+      // std::cin >> input_x;
+      input_x = rand()%7;
+    } while (!plate.is_valid_hand(input_x));
     plate.insert(input_x);
-
-    plate.show();
+    show(plate);
     if (plate.is_game_finish()) break;
     plate.switch_active_stone();
   }

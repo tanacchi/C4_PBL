@@ -2,7 +2,7 @@
 #include "VirtualPlate.h"
 
 VirtualPlate::VirtualPlate()
-  : plate {std::vector<std::vector<Stone> > (PLATE_HEIGHT, std::vector<Stone> (PLATE_WIDTH, Stone::SPACE))},
+  : plate {std::vector<std::vector<Stone> > (PLATE_HEIGHT, std::vector<Stone> (PLATE_WIDTH, Stone::Space))},
     active_stone {Stone::Red}
 {
 }

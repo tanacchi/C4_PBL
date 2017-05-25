@@ -64,11 +64,10 @@ void VirtualPlate::switch_active_stone() {
 }
 
 bool VirtualPlate::can_continue() const {
-  int count = 0;
   for (int i = 0; i < PLATE_HEIGHT; i++)
     for (int j = 0; j < PLATE_WIDTH; j++)
-      if (plate[i][j] == Stone::Space) count++;
-  return (count > 0);
+      if (plate[i][j] == Stone::Space) return true;
+  return false;
 }
 
 bool VirtualPlate::is_inside_plate(int x, int y) const {

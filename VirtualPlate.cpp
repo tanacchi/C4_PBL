@@ -2,19 +2,19 @@
 #include "VirtualPlate.h"
 
 VirtualPlate::VirtualPlate()
-  : plate {std::vector<std::vector<Stone> > (PLATE_HEIGHT, std::vector<Stone> (PLATE_WIDTH, Stone::Space))},
-    active_stone {Stone::Red}
+  : active_stone {Stone::Red}
 {
+  init();
 }
 
 VirtualPlate::VirtualPlate(const VirtualPlate& src)
-  : plate {src.plate},
+  :// plate {copy_plate(src)},
     active_stone {src.active_stone}
 {
 }
 
 const VirtualPlate& VirtualPlate::operator=(const VirtualPlate& src) {
-  plate = src.plate;
+  // plate = copy_plate(src);
   active_stone = src.active_stone;
   return *this;
 }  
@@ -24,6 +24,14 @@ void VirtualPlate::init() {
     for (int j = 0; j < PLATE_WIDTH; j++)
       plate[i][j] = Stone::Space;
 }
+
+// const VirtualPlate::Stone& copy_plate(const VirtualPlate& src) {
+//   static Stone dist[PLATE_HEIGHT][PLATE_WIDTH];
+//   for (int i = 0; i < PLATE_HEIGHT; i++)
+//     for (int j = 0; j < PLATE_WIDTH; j++)
+//       dist[i][j] = src.plate[i][j];
+//   return dist;
+// }
 
 char convert_stone_to_char(Stone stone) {
   return
@@ -75,8 +83,8 @@ inline bool VirtualPlate::is_inside_plate(int x, int y) const {
 }
 
 bool VirtualPlate::is_game_finish() const {
-  const std::vector<int> dx = { 1, 1, 1, 0 };
-  const std::vector<int> dy = {-1, 0, 1, 1 };
+  const int dx[] = { 1, 1, 1, 0 };
+  const int dy[] = {-1, 0, 1, 1 };
   for (int i = 0; i < 4; i++) 
     for (int y = 0; y < PLATE_HEIGHT; y++) 
       for (int x = 0; x < PLATE_WIDTH; x++)

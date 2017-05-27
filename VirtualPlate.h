@@ -1,8 +1,6 @@
 #ifndef VirtualPlate_h
 #define VirtualPlate_h
 
-#include <vector>
-
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
 
@@ -13,7 +11,7 @@ enum class Stone {
 };
 
 class VirtualPlate {
-  std::vector <std::vector <Stone> > plate;
+  Stone plate[PLATE_HEIGHT][PLATE_WIDTH];
   Stone active_stone;
 public:
   VirtualPlate();

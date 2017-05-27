@@ -47,7 +47,7 @@ void show(VirtualPlate game_plate) {
 }
 
 bool VirtualPlate::is_valid_hand(int x) const {
-  return (plate[0][x] == Stone::Space) ;
+  return (plate[0][x] == Stone::Space);
 }
 
 void VirtualPlate::insert(int input_x) {
@@ -55,7 +55,7 @@ void VirtualPlate::insert(int input_x) {
     if (!can_drop(input_x, y)) { plate[y][input_x] = active_stone; return; }
 }
 
-bool VirtualPlate::can_drop(int x, int y) const {
+inline bool VirtualPlate::can_drop(int x, int y) const {
   return (y < PLATE_HEIGHT-1) && (plate[y+1][x] == Stone::Space);
 }
 
@@ -70,7 +70,7 @@ bool VirtualPlate::can_continue() const {
   return false;
 }
 
-bool VirtualPlate::is_inside_plate(int x, int y) const {
+inline bool VirtualPlate::is_inside_plate(int x, int y) const {
   return (0 <= x && x < PLATE_WIDTH) && (0 <= y && y < PLATE_HEIGHT);
 }
 
@@ -79,17 +79,18 @@ bool VirtualPlate::is_game_finish() const {
   const std::vector<int> dy = {-1, 0, 1, 1 };
   for (int i = 0; i < 4; i++) 
     for (int y = 0; y < PLATE_HEIGHT; y++) 
-      for (int x = 0; x < PLATE_WIDTH; x++) {
-        if (plate[y][x] != active_stone) continue;
-        if (get_length(x, y, dx[i], dy[i]) >= 4) return true;
-      }
+      for (int x = 0; x < PLATE_WIDTH; x++)
+        {
+          if (plate[y][x] != active_stone) continue;
+          if (get_length(x, y, dx[i], dy[i]) >= 4) return true;
+        }
   return false;
 }
 
 int VirtualPlate::get_length(int x, int y, int dx, int dy) const {
-  int i;
-  for (i = 1; is_inside_plate(x+i*dx, y+i*dy); i++)
-    if (plate[y+i*dy][x+i*dx] == active_stone) continue;
+  int length;
+  for (length = 1; is_inside_plate(x+dx*length, y+dy*length); length++)
+    if (plate[y+dy*length][x+dx*length] == active_stone) continue;
     else break;
-  return i;
+  return length;
 }

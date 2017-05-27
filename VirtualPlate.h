@@ -22,10 +22,10 @@ public:
   ~VirtualPlate() = default;
   void init();
   void insert(int input_x);
-  bool can_drop(int x, int y) const;
+  inline bool can_drop(int x, int y) const;
   void switch_active_stone();
   bool can_continue() const;
-  bool is_inside_plate(int x, int y) const;
+  inline bool is_inside_plate(int x, int y) const;
   bool is_game_finish() const;
   int get_length(int x, int y, int dx, int dy) const;
   bool is_valid_hand(int x) const;

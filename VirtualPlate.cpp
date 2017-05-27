@@ -8,13 +8,13 @@ VirtualPlate::VirtualPlate()
 }
 
 VirtualPlate::VirtualPlate(const VirtualPlate& src)
-  :// plate {copy_plate(src)},
-    active_stone {src.active_stone}
+  : active_stone {src.active_stone}
 {
+  copy_plate(src);
 }
 
 const VirtualPlate& VirtualPlate::operator=(const VirtualPlate& src) {
-  // plate = copy_plate(src);
+  copy_plate(src);
   active_stone = src.active_stone;
   return *this;
 }  
@@ -25,13 +25,11 @@ void VirtualPlate::init() {
       plate[i][j] = Stone::Space;
 }
 
-// const VirtualPlate::Stone& copy_plate(const VirtualPlate& src) {
-//   static Stone dist[PLATE_HEIGHT][PLATE_WIDTH];
-//   for (int i = 0; i < PLATE_HEIGHT; i++)
-//     for (int j = 0; j < PLATE_WIDTH; j++)
-//       dist[i][j] = src.plate[i][j];
-//   return dist;
-// }
+void VirtualPlate::copy_plate(const VirtualPlate& src) {
+  for (int i = 0; i < PLATE_HEIGHT; i++)
+    for (int j = 0; j < PLATE_WIDTH; j++)
+      this->plate[i][j] = src.plate[i][j];
+}
 
 char convert_stone_to_char(Stone stone) {
   return

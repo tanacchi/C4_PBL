@@ -19,6 +19,7 @@ public:
   const VirtualPlate& operator=(const VirtualPlate& src);
   ~VirtualPlate() = default;
   void init();
+  void copy_plate(const VirtualPlate& src);
   void insert(int input_x);
   inline bool can_drop(int x, int y) const;
   void switch_active_stone();

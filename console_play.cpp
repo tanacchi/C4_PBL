@@ -21,8 +21,9 @@ int main() {
   while (plate.can_continue()) { 
       int input_x;
     do {
-      // std::cout << "Input hand !!         >>>>>>> " << std::flush;
+      // std::cout << "Input hand !!/n> " << std::flush;
       // std::cin >> input_x;
+      // std::cout.put('\n');
       input_x = rand()%7;
     } while (!plate.is_valid_hand(input_x));
     plate.insert(input_x);

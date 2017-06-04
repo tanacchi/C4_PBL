@@ -1,5 +1,5 @@
-#ifndef VirtualPlate_h
-#define VirtualPlate_h
+#ifndef VIRTUAL_PLATE_H_
+#define VIRTUAL_PLATE_H_
 
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
@@ -31,4 +31,4 @@ public:
   friend void show(VirtualPlate game_plate);
 };
 
-#endif
+#endif // VIRTUAL_PLATE_H_

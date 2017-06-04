@@ -1,7 +1,9 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+
 #include "VirtualPlate.h"
+#include "HandSeeker.h"
 
 enum class Task {
   Init,
@@ -39,20 +41,23 @@ int main() {
   
   VirtualPlate plate;
   show(plate);
-
-  while (plate.can_continue()) { 
-      int input_x;
-    do {
-      // std::cout << "Input hand !!/n> " << std::flush;
-      // std::cin >> input_x;
-      // std::cout.put('\n');
-      input_x = rand()%7;
-    } while (!plate.is_valid_hand(input_x));
-    plate.insert(input_x);
-    show(plate);
-    if (plate.is_game_finish()) break;
-    plate.switch_active_stone();
-  }
+  plate.insert(3);
+  
+  HandSeeker seeker(plate);
+  
+  // while (plate.can_continue()) { 
+  //     int input_x;
+  //   do {
+  //     // std::cout << "Input hand !!/n> " << std::flush;
+  //     // std::cin >> input_x;
+  //     // std::cout.put('\n');
+  //     input_x = rand()%7;
+  //   } while (!plate.is_valid_hand(input_x));
+  //   plate.insert(input_x);
+  //   show(plate);
+  //   if (plate.is_game_finish()) break;
+  //   plate.switch_active_stone();
+  // }
 
   return 0;
 }

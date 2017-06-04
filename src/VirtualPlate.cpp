@@ -1,4 +1,4 @@
-#include "VirtualPlate.h"
+#include "../include/VirtualPlate.h"
 
 VirtualPlate::VirtualPlate()
   : active_stone {Stone::Red}

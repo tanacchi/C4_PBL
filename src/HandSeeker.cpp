@@ -10,6 +10,10 @@ void HandList::set_position(int x) {
   position = x;
 }
 
+double HandList::get_score() const {
+  return score;
+}
+
 HandSeeker::HandSeeker(VirtualPlate game_plate)
   : myplate { game_plate },
     sub { 0 },
@@ -28,6 +32,7 @@ const HandSeeker& HandSeeker::operator=(const HandSeeker& src) {
   myplate = src.myplate;
   sub = src.sub;
   dist_x = src.dist_x;
+  return *this;
 }
 
 int HandSeeker::get_conclusion() const {

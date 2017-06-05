@@ -9,6 +9,7 @@ class HandList {
  public:
   HandList();
   void set_position(int x);
+  double get_score() const;
 };
 
 class HandSeeker {

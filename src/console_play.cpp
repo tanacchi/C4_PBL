@@ -41,23 +41,21 @@ int main() {
   
   VirtualPlate plate;
   show(plate);
-  plate.insert(3);
   
-  HandSeeker seeker(plate);
-  
-  // while (plate.can_continue()) { 
-  //     int input_x;
-  //   do {
-  //     // std::cout << "Input hand !!/n> " << std::flush;
-  //     // std::cin >> input_x;
-  //     // std::cout.put('\n');
-  //     input_x = rand()%7;
-  //   } while (!plate.is_valid_hand(input_x));
-  //   plate.insert(input_x);
-  //   show(plate);
-  //   if (plate.is_game_finish()) break;
-  //   plate.switch_active_stone();
-  // }
+  while (plate.can_continue()) { 
+      int input_x;
+    do {
+      // std::cout << "Input hand !!/n> " << std::flush;
+      // std::cin >> input_x;
+      // std::cout.put('\n');
+      input_x = rand()%7;
+    } while (!plate.is_valid_hand(input_x));
+    for (int i = 0; i < 100000000; i++) ;
+    plate.insert(input_x);
+    show(plate);
+    if (plate.is_game_finish()) break;
+    plate.switch_active_stone();
+  }
 
   return 0;
 }

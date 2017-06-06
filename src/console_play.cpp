@@ -43,7 +43,9 @@ int main() {
   show(plate);
   
   while (plate.can_continue()) { 
-      int input_x;
+    int input_x;
+    HandSeeker seeker(plate);
+    seeker.record_list();
     do {
       // std::cout << "Input hand !!/n> " << std::flush;
       // std::cin >> input_x;

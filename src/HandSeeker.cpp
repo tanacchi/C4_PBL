@@ -46,4 +46,5 @@ void HandSeeker::record_list() {             // REFACTOR: どう考えても二�
   hand_list = new HandList[branch]; 
   for (int i = 0; i < PLATE_WIDTH; i++)
     if (myplate.is_valid_hand(i)) hand_list[i].set_position(i); // [] のオーバーロードでうまいこと行くかもしれない
+  std::cout << "branch = " << branch << std::endl;
 }

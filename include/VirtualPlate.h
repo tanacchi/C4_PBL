@@ -11,9 +11,14 @@ enum class Stone {
 };
 
 class VirtualPlate {
+  /* enum class Stone { */
+  /*   Space, */
+  /*   Red, */
+  /*   Blue */
+  /* }; */
   Stone plate[PLATE_HEIGHT][PLATE_WIDTH];
   Stone active_stone;
-public:
+ public:
   VirtualPlate();
   VirtualPlate(const VirtualPlate& plate);
   const VirtualPlate& operator=(const VirtualPlate& src);

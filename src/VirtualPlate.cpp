@@ -59,15 +59,13 @@ inline bool VirtualPlate::is_inside_plate(int x, int y) const {
 }
 
 bool VirtualPlate::is_game_finish() const {
-  const int dx[] = { 1, 1, 1, 0 };
-  const int dy[] = {-1, 0, 1, 1 };
+  static const int dx[] = { 1, 1, 1, 0 };
+  static const int dy[] = {-1, 0, 1, 1 };
   for (int i = 0; i < 4; i++) 
     for (int y = 0; y < PLATE_HEIGHT; y++) 
       for (int x = 0; x < PLATE_WIDTH; x++)
-        {
-          if (plate[y][x] != active_stone) continue;
-          if (get_length(x, y, dx[i], dy[i]) >= 4) return true;
-        }
+        if (plate[y][x] != active_stone) continue;
+        else if (get_length(x, y, dx[i], dy[i]) >= 4) return true;
   return false;
 }
 

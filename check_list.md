@@ -1,3 +1,5 @@
 * std系統がサポートされているか
-  - hand_listを ```C++ std::pair ``` として定義できる
+  - hand_listを std::pair で定義
 * EV3shieldのライブラリ操作
+* 関数オブジェクト
+  - HandSeekerがスマートになる

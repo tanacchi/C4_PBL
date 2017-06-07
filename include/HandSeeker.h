@@ -18,13 +18,8 @@ class HandSeeker {
   HandSeeker* sub;
   int dist_x;   // <- size_t or unsigned ??
   HandList* hand_list;
-  /* int dist_x, dist_y; */
-  /* std::mt19937 rand_pos; */
-  /* std::vector<StoneScoreList> score_list; */
-  /* BoardMaster virtual_board; */
-  /* int mydepth; */
-  /* OthelloAI* subAI; */
-  /* int serial_num; */
+  static const unsigned int max_depth; // <- byte ??
+  unsigned int mydepth;    // <- byte ??
   /* int branch; */
  public:
   HandSeeker(VirtualPlate game_plate);

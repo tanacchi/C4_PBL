@@ -6,6 +6,10 @@ HandList::HandList()
 {
 }
 
+// HandList::~HandList() {
+//   std::cout << "Bye!" << std::endl;
+// }
+
 void HandList::set_position(int x) {
   position_ = x;
 }
@@ -32,6 +36,9 @@ HandSeeker::HandSeeker(const HandSeeker& src)
 {
 }
 
+// HandSeeker::~HandSeeker() {
+// }
+
 int HandSeeker::operator()(const VirtualPlate& game_plate) {
   myplate_ = game_plate;
   return seek();
@@ -51,12 +58,22 @@ void HandSeeker::record_list() {             // REFACTOR: どう考えても二�
     if (myplate_.is_valid_hand(i)) hand_list_[i].set_position(i); // [] のオーバーロードでうまいこと行くかもしれない
 }
 
-int HandSeeker::seek() {
-  record_list();
+long n;
+
+void HandSeeker::set_sub() {
   sub_ = new HandSeeker[branch_];
-  for (int i = 0; i < branch_; i++) {
+  for (int i = 0; i < branch_ && n++ < 10000; i++) {
     sub_[i] = *this;
     sub_[i].myplate_.insert(hand_list_[i].get_position());
     sub_[i].myplate_.switch_active_stone();
+    sub_[i].record_list();
+    if (sub_[i].branch_) sub_[i].set_sub();
   }
+}
+
+int HandSeeker::seek() {
+  record_list();
+  set_sub();
+  std::cout << "Done " << n << std::endl;
+  return 0;
 }

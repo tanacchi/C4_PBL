@@ -9,6 +9,7 @@ class HandList {
   double score_;
  public:
   HandList();
+  ~HandList() = default;
   void set_position(int x);
   double get_score() const;
   int get_position() const;
@@ -24,10 +25,12 @@ class HandSeeker {
  public:
   HandSeeker();
   HandSeeker(const HandSeeker& src);
+  ~HandSeeker() = default;
   int operator()(const VirtualPlate& game_plate);
   const HandSeeker& operator=(const HandSeeker& src);
   void set_myplate(const VirtualPlate& src);
   void record_list();
+  void set_sub();
   int seek();
 };
 

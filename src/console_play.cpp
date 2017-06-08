@@ -29,7 +29,7 @@ void show(VirtualPlate game_plate) {
   for (int y = 0; y < PLATE_HEIGHT; std::cout.put('\n'), y++) {
     std::cout << "| ";
     for (int x = 0; x < PLATE_WIDTH; std::cout.put(' '), x++)
-      std::cout.put(to_char(game_plate.plate[y][x]));
+      std::cout.put(to_char(game_plate.plate_[y][x]));
     std::cout << "|";
   }
   std::cout << "-----------------" << std::endl;
@@ -44,8 +44,10 @@ int main() {
   
   while (plate.can_continue()) { 
     int input_x;
-    HandSeeker seeker(plate);
-    seeker.record_list();
+    HandSeeker* seeker = new HandSeeker();
+    int buff = (*seeker)(plate);
+    seeker->record_list();
+    delete seeker;
     do {
       // std::cout << "Input hand !!/n> " << std::flush;
       // std::cin >> input_x;

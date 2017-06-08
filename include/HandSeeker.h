@@ -5,28 +5,30 @@
 #include <iostream>
 
 class HandList {
-  int position;
-  double score;
+  int position_;
+  double score_;
  public:
   HandList();
   void set_position(int x);
   double get_score() const;
+  int get_position() const;
 };
 
 class HandSeeker {
-  VirtualPlate myplate;
-  HandSeeker* sub;
-  int dist_x;   // <- size_t or unsigned ??
-  HandList* hand_list;
-  static const unsigned int max_depth; // <- byte ??
-  unsigned int mydepth;    // <- byte ??
-  /* int branch; */
+  VirtualPlate myplate_;
+  HandSeeker* sub_;
+  HandList* hand_list_;
+  static const unsigned int max_depth_; // <- byte ??
+  unsigned int mydepth_;    // <- byte ??
+  int branch_;
  public:
-  HandSeeker(VirtualPlate game_plate);
+  HandSeeker();
   HandSeeker(const HandSeeker& src);
+  int operator()(const VirtualPlate& game_plate);
   const HandSeeker& operator=(const HandSeeker& src);
-  int get_conclusion() const;
+  void set_myplate(const VirtualPlate& src);
   void record_list();
+  int seek();
 };
 
 #endif // HAND_SEEKER_H_

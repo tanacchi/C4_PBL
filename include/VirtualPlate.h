@@ -16,8 +16,8 @@ class VirtualPlate {
   /*   Red, */
   /*   Blue */
   /* }; */
-  Stone plate[PLATE_HEIGHT][PLATE_WIDTH];
-  Stone active_stone;
+  Stone plate_[PLATE_HEIGHT][PLATE_WIDTH];
+  Stone active_stone_;
  public:
   VirtualPlate();
   VirtualPlate(const VirtualPlate& plate);

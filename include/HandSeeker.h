@@ -30,7 +30,7 @@ class HandSeeker {
   const HandSeeker& operator=(const HandSeeker& src);
   void set_myplate(const VirtualPlate& src);
   void record_list();
-  void set_sub();
+  void set_list_score();
   int seek();
 };
 

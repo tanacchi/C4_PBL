@@ -25,6 +25,7 @@ int HandList::get_position() const {
 HandSeeker::HandSeeker()
   : myplate_(),
     sub_ { 0 },
+    mydepth_ { 0 },
     branch_ { 0 }
 {
 }
@@ -32,6 +33,7 @@ HandSeeker::HandSeeker()
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ { src.myplate_ },
     sub_ { src.sub_ },
+    mydepth_ { src.mydepth_ },
     branch_ { 0 }
 {
 }
@@ -47,6 +49,7 @@ int HandSeeker::operator()(const VirtualPlate& game_plate) {
 const HandSeeker& HandSeeker::operator=(const HandSeeker& src) {
   myplate_ = src.myplate_;
   sub_ = src.sub_;
+  mydepth_ = src.mydepth_;
   return *this;
 }
 
@@ -60,7 +63,7 @@ void HandSeeker::record_list() {             // REFACTOR: どう考えても二�
 
 long n;
 
-void HandSeeker::set_sub() {
+void HandSeeker::set_list_score() {
   sub_ = new HandSeeker[branch_];
   for (int i = 0; i < branch_ && n++ < 10000; i++) {
     sub_[i] = *this;
@@ -73,7 +76,7 @@ void HandSeeker::set_sub() {
 
 int HandSeeker::seek() {
   record_list();
-  set_sub();
+  set_list_score();
   std::cout << "Done " << n << std::endl;
   return 0;
 }

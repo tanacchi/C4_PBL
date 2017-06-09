@@ -11,6 +11,7 @@ class HandList {
   HandList();
   ~HandList() = default;
   void set_position(int x);
+  void set_score(double s);
   double get_score() const;
   int get_position() const;
 };
@@ -30,7 +31,7 @@ class HandSeeker {
   const HandSeeker& operator=(const HandSeeker& src);
   void set_myplate(const VirtualPlate& src);
   void record_list();
-  void set_list_score();
+  double set_list_score();
   int seek();
 };
 

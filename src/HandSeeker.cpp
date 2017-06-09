@@ -14,6 +14,10 @@ void HandList::set_position(int x) {
   position_ = x;
 }
 
+void HandList::set_score(double s) {
+  score_ = s;
+}
+
 double HandList::get_score() const {
   return score_;
 }
@@ -32,7 +36,7 @@ HandSeeker::HandSeeker()
 
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ { src.myplate_ },
-    sub_ { src.sub_ },
+    // sub_ { src.sub_ },
     mydepth_ { src.mydepth_ },
     branch_ { 0 }
 {
@@ -63,20 +67,21 @@ void HandSeeker::record_list() {             // REFACTOR: どう考えても二�
 
 long n;
 
-void HandSeeker::set_list_score() {
-  sub_ = new HandSeeker[branch_];
-  for (int i = 0; i < branch_ && n++ < 10000; i++) {
-    sub_[i] = *this;
-    sub_[i].myplate_.insert(hand_list_[i].get_position());
-    sub_[i].myplate_.switch_active_stone();
-    sub_[i].record_list();
-    if (sub_[i].branch_) sub_[i].set_sub();
+double HandSeeker::set_list_score() {
+  double score;
+  record_list();
+  if (!branch_ || n > 1000) return 5.00;
+  for (int i = 0; i < branch_ && n++ < 1000; i++) {
+    sub_ = new HandSeeker(*this);
+    sub_->myplate_.insert(hand_list_[i].get_position());
+    sub_->myplate_.switch_active_stone();
+    score += sub_[i].set_list_score();
+    delete sub_;
   }
+  return score;
 }
 
 int HandSeeker::seek() {
-  record_list();
-  set_list_score();
-  std::cout << "Done " << n << std::endl;
+  std::cout << "Done " << set_list_score() << std::endl;
   return 0;
 }

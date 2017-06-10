@@ -72,7 +72,7 @@ int n;
 double HandSeeker::set_list_score() {
   double score;
   record_list();
-  if (!(branch_ && max_depth_-mydepth_ > 0)) return 5.00;
+  if (!(branch_ && max_depth_-mydepth_ > 0)) return evaluate_hand();
   for (int i = 0; i < branch_ && n++ < 10000; i++) {
     sub_ = new HandSeeker(*this);
     sub_->myplate_.insert(hand_list_[i].get_position());
@@ -86,4 +86,16 @@ double HandSeeker::set_list_score() {
 int HandSeeker::seek() {
   std::cout << "Done " << set_list_score() << std::endl;
   return 0;
+}
+
+int HandSeeker::evaluate_hand() {
+  int max = 0;
+  int score_buff;
+  for (int i = 0; i < 4; i++)
+    for (int y = 0; y < PLATE_HEIGHT; y++)
+      for (int x = 0; x < PLATE_WIDTH; x++) {
+        score_buff = myplate_.get_length(x, y, dx[i], dy[i]);
+        if (score_buff > max) max = score_buff;
+      }
+  return max;
 }

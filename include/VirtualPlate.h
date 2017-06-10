@@ -10,6 +10,9 @@ enum class Stone {
   Blue
 };
 
+static const int dx[] = { 1, 1, 1, 0 };
+static const int dy[] = {-1, 0, 1, 1 };
+
 class VirtualPlate {
   /* enum class Stone { */
   /*   Space, */

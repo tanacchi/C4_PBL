@@ -33,6 +33,7 @@ class HandSeeker {
   void record_list();
   double set_list_score();
   int seek();
+  int evaluate_hand();
 };
 
 #endif // HAND_SEEKER_H_

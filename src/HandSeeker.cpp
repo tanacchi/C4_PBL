@@ -29,6 +29,7 @@ int HandList::get_position() const {
 HandSeeker::HandSeeker()
   : myplate_(),
     sub_ { 0 },
+    max_depth_ { 3 },
     mydepth_ { 0 },
     branch_ { 0 }
 {
@@ -37,6 +38,7 @@ HandSeeker::HandSeeker()
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ { src.myplate_ },
     // sub_ { src.sub_ },
+    max_depth_ { src.max_depth_ },
     mydepth_ { src.mydepth_ },
     branch_ { 0 }
 {
@@ -65,17 +67,17 @@ void HandSeeker::record_list() {             // REFACTOR: どう考えても二�
     if (myplate_.is_valid_hand(i)) hand_list_[i].set_position(i); // [] のオーバーロードでうまいこと行くかもしれない
 }
 
-long n;
+int n;
 
 double HandSeeker::set_list_score() {
   double score;
   record_list();
-  if (!branch_ || n > 1000) return 5.00;
-  for (int i = 0; i < branch_ && n++ < 1000; i++) {
+  if (!(branch_ && max_depth_-mydepth_ > 0)) return 5.00;
+  for (int i = 0; i < branch_ && n++ < 10000; i++) {
     sub_ = new HandSeeker(*this);
     sub_->myplate_.insert(hand_list_[i].get_position());
     sub_->myplate_.switch_active_stone();
-    score += sub_[i].set_list_score();
+    score += sub_->set_list_score();
     delete sub_;
   }
   return score;

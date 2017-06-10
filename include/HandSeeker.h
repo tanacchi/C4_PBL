@@ -20,7 +20,7 @@ class HandSeeker {
   VirtualPlate myplate_;
   HandSeeker* sub_;
   HandList* hand_list_;
-  static const unsigned int max_depth_; // <- byte ??
+  const unsigned int max_depth_; // <- byte ??
   unsigned int mydepth_;    // <- byte ??
   int branch_;
  public:

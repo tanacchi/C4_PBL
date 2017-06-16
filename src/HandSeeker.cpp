@@ -24,6 +24,7 @@ HandSeeker::~HandSeeker() {
 
 int HandSeeker::operator()(const VirtualPlate& game_plate) {
   myplate_ = game_plate;
+  record_list();
   return seek();
 }
 
@@ -37,6 +38,7 @@ const HandSeeker& HandSeeker::operator=(const HandSeeker& src) {
 void HandSeeker::record_list() {             // REFACTOR: どう考えても二度手間
   for (int i = 0; i < PLATE_WIDTH; i++)
     if (myplate_.is_valid_hand(i)) branch_++;
+  std::cout << "branch = " << branch_ << std::endl;
   std::cout << "AHI !! " << std::flush;
   hand_list_ = new int[branch_];
   std::cout << "AHI !! " << std::endl;
@@ -48,7 +50,6 @@ int n = 0;
 
 double HandSeeker::set_list_score() {
   double score;
-  record_list();
   if (!(branch_ && max_depth_-mydepth_ > 0)) return evaluate_hand();
   for (int i = 0; i < branch_; i++) {
     std::cout << "Hello " << ++n << ' ' << std::flush;
@@ -56,6 +57,7 @@ double HandSeeker::set_list_score() {
     sub_->mydepth_++;
     sub_->myplate_.insert(hand_list_[i]);
     sub_->myplate_.switch_active_stone();
+    sub_->record_list();
     std::cout << "How are you ? " << n << ' ' << std::flush;
     score += sub_->set_list_score();
     delete sub_;

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../include/VirtualPlate.h"
-#include "../include/HandSeeker.h"
+#include "../include/VirtualPlate.hpp"
+#include "../include/HandSeeker.hpp"
 
 enum class Task {
   Init,

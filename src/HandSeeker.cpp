@@ -1,4 +1,4 @@
-#include "../include/HandSeeker.h"
+#include "../include/HandSeeker.hpp"
 
 HandSeeker::HandSeeker()
   : myplate_(),

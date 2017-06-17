@@ -2,7 +2,6 @@
 #define HAND_SEEKER_H_
 
 #include "../include/VirtualPlate.h"
-#include <iostream>
 
 class HandList {
   int position_;

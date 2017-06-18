@@ -1,5 +1,8 @@
-* std系統がサポートされているか
-  - hand_listを std::pair で定義
-* EV3shieldのライブラリ操作
-* 関数オブジェクト
-  - HandSeekerがスマートになる
+* src内でarduino系ライブラリを使用できるか
+  - シリアル通信の起動をオブジェクトのコンストラクタに任せる
+* arduino-EV3のシリアル通信
+* EV3単体のテキストプログラミング
+* arduino-EV3shield-EV3の連携
+* ポートの割り振り確認
+  - EV3の方を優先して使ったら後が楽
+* EV3Bricxをいじくりわます

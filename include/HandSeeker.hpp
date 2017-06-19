@@ -3,21 +3,9 @@
 
 #include "../include/VirtualPlate.hpp"
 
-class HandList {
-  int position_;
-  double score_;
- public:
-  HandList();
-  ~HandList() = default;
-  void set_position(int x);
-  void set_score(double s);
-  double get_score() const;
-  int get_position() const;
-};
-
 class HandSeeker {
   VirtualPlate myplate_;
-  int* hand_list_;
+  bool hand_list_[PLATE_WIDTH];
   HandSeeker* sub_;
   const unsigned int max_depth_; // <- byte ??
   unsigned int mydepth_;    // <- byte ??
@@ -28,6 +16,7 @@ class HandSeeker {
   ~HandSeeker();
   int operator()(const VirtualPlate& game_plate);
   const HandSeeker& operator=(const HandSeeker& src);
+  const bool* init_list();
   void set_myplate(const VirtualPlate& src);
   void record_list();
   double set_list_score();

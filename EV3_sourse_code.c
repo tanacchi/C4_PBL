@@ -11,17 +11,19 @@
 #include "C:\BricxCC\lms_api\ev3_output.h"
 #include "C:\BricxCC\lms_api\ev3_command.h"
 #include "C:\BricxCC\lms_api\ev3_lcd.h"
-// Definition of Serial communication.
+#include "jissenPBL.h"
+
 #define BAUDRATE 9600
 #define MODEMDEVICE "/dev/ttyACM0"
-// global variables.
-struct termios oldTermio; // for keep original setting.
-// Prototype of function.
+
+struct termios oldTermio;
+
 int Serial_begin(int brate, char* devicePath);
 void Serial_end(int fd);
 int Serial_write(int fd, uint8_t pbyte);
 uint8_t Serial_read(int fd);
 int analogToCentimeter(int analogValue);
+
 int main(int argc, char *argv[])
 {
   int fd = -1;
@@ -30,19 +32,14 @@ int main(int argc, char *argv[])
   int i, j;
   char disp[64];
   OutputInit();
-  // Initialize serial port.
   fd = Serial_begin(BAUDRATE, MODEMDEVICE);
-  if (fd < 0)
-    {
-      printf("Serial port initialize Error.\n");
-      exit(-1);
-    }
+  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) sprintf("Waiting for serial connection...\n");
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
   LcdSelectFont(1);
   LcdText( 0, 2, 100, "Sart Serial Communication");
-  for (i = 0; i < 1000; i++)
+  for (i = 0; i < 500; i++)
     {
       Serial_write(fd, 0x05);
       usleep(500000);
@@ -57,10 +54,10 @@ int main(int argc, char *argv[])
       LcdScroll(10);
       LcdText( 1, 2, 100, disp);
 
-      if (data > 300) {
-        OnFwdEx(OUT_AB,70,0); //AB Port Motor Start Power 70
-        Wait(100); //Wait 100msec
-        Off(OUT_AB); //AB Port Motor Stop
+      if (i%100) {
+        OnFwdEx(OUT_B,70,0); 
+        Wait(100); 
+        Off(OUT_B); 
       }
       usleep(500);
     }

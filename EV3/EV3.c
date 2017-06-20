@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   char disp[64];
   int is_touched = 0;
   OutputInit();
-  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) sprintf("Waiting for serial connection...\n");
+  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) printf("Waiting for serial connection...\n");
   LcdInit();
   LcdRefresh();
   LcdScroll(10);

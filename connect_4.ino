@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <EVShield.h>
 #include <EVs_EV3Touch.h>
+#include "include/BodyController.hpp"
 
 EVShield evshield(0x34, 0x36);
 EVs_EV3Touch touch;
@@ -16,13 +17,11 @@ void setup() {
 }
 
 void loop() {
-  if (touch.getBumpCount() % 2) {
     evshield.bank_a.motorRunDegrees(SH_Motor_1,
                                     SH_Direction_Reverse,
                                     10,
                                     30,
                                     SH_Completion_Dont_Wait,
                                     SH_Next_Action_Brake);
-    delay(30);
-  }
+    delay(100);
 }

@@ -5,4 +5,5 @@ BodyController::BodyController()
 {
   evshield.init(SH_HardwareI2C);
   for (int i = 0; i < LANE_NUM; i++) touch[i].init(&evshield, i);
+  delay(100);
 }

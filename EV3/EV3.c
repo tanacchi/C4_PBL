@@ -13,8 +13,6 @@
 #include "C:\BricxCC\lms_api\ev3_lcd.h"
 #include "jissenPBL.h"
 
-#include "connection_test.h"
-
 #define BAUDRATE 9600
 #define MODEMDEVICE "/dev/ttyACM0"
 

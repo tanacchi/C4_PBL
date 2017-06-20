@@ -5,6 +5,8 @@
 
 byte sendData[4];
 
+// EV3 (touch) <-----> Shield (motor)
+
 EVShield evshield(0x34, 0x36);
 EVs_EV3Touch touch;
 

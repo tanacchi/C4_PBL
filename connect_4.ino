@@ -11,7 +11,6 @@ void setup() {
   evshield.bank_a.motorReset();
 
   touch.init( &evshield, SH_BAS1);
-  setMode ????
   touch.resetBumpCount();
   //  evshield.waitForButtonPress(BTN_GO);
 }

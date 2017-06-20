@@ -13,6 +13,8 @@
 #include "C:\BricxCC\lms_api\ev3_lcd.h"
 #include "jissenPBL.h"
 
+#include "connection_test.h"
+
 #define BAUDRATE 9600
 #define MODEMDEVICE "/dev/ttyACM0"
 
@@ -24,8 +26,7 @@ int Serial_write(int fd, uint8_t pbyte);
 uint8_t Serial_read(int fd);
 int analogToCentimeter(int analogValue);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   int fd = -1;
   uint8_t rcvByte[16];
   int data;
@@ -33,7 +34,8 @@ int main(int argc, char *argv[])
   char disp[64];
   int is_touched = 0;
   OutputInit();
-  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) printf("Waiting for serial connection...\n");
+  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
+    sprintf(disp, "Waiting for serial connection...\n");
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
@@ -43,43 +45,38 @@ int main(int argc, char *argv[])
   initSensor();
   setSensorPort(CH_1,TOUCH, 0);
 
-  for (i = 0; i < 500; i++)
-    {
-      Serial_write(fd, getSensor(CH_1));
-      usleep(500000);
-      for (j = 0; j < 4; j++)
-        {
-          rcvByte[j] = Serial_read(fd);
-        }
-      data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
-
-      printf("%d\n", data);
-      sprintf(disp, "%d %d", i, data);
-      LcdScroll(10);
-      LcdText( 1, 2, 100, disp);
-
-      if (i%100) {
-        OnFwdEx(OUT_B,70,0); 
-        Wait(100); 
-        Off(OUT_B); 
-      }
-      usleep(500);
+  for (i = 0; i < 500; i++) {
+    Serial_write(fd, getSensor(CH_1));
+    usleep(500000);
+    for (j = 0; j < 4; j++) rcvByte[j] = Serial_read(fd);
+    data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
+    
+    printf("%d\n", data);
+    sprintf(disp, "%d %d", i, data);
+    LcdScroll(10);
+    LcdText( 1, 2, 100, disp);
+    
+    if (i%100) {
+      OnFwdEx(OUT_B,70,0); 
+      Wait(100); 
+      Off(OUT_B); 
     }
+    usleep(500);
+  }
   closeSensor();
   return 0;
 }
-int Serial_begin(int brate, char* devicePath)
-{
+
+int Serial_begin(int brate, char* devicePath) {
   int fd;
   struct termios newTermio;
   // open the device.
   fd = open(devicePath, O_RDWR | O_NOCTTY);
-  if (fd < 0)
-    {
-      // failed to open device.
-      perror(devicePath);
-      exit(-1);
-    }
+  if (fd < 0) {
+    // failed to open device.
+    perror(devicePath);
+    exit(-1);
+  }
   // get original setting and keep it.
   tcgetattr(fd, &oldTermio);
   // Initialize new_term_io' control code.
@@ -94,39 +91,38 @@ int Serial_begin(int brate, char* devicePath)
   // CS8 = 8bit, no parity, 1 stopbit
   // CLOCAL = local(non modem control)
   // CREAD = enable read charactor
-  switch (brate)
-    {
-    case 300:
-      newTermio.c_cflag = B300 | CS8 | CLOCAL | CREAD;
-      break;
-    case 1200:
-      newTermio.c_cflag = B1200 | CS8 | CLOCAL | CREAD;
-      break;
-    case 2400:
-      newTermio.c_cflag = B2400 | CS8 | CLOCAL | CREAD;
-      break;
-    case 4800:
-      newTermio.c_cflag = B4800 | CS8 | CLOCAL | CREAD;
-      break;
-    case 9600:
-      newTermio.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
-      break;
-    case 19200:
-      newTermio.c_cflag = B19200 | CS8 | CLOCAL | CREAD;
-      break;
-    case 38400:
-      newTermio.c_cflag = B38400 | CS8 | CLOCAL | CREAD;
-      break;
-    case 57600:
-      newTermio.c_cflag = B57600 | CS8 | CLOCAL | CREAD;
-      break;
-    case 115200:
-      newTermio.c_cflag = B115200 | CS8 | CLOCAL | CREAD;
-      break;
-    default:
-      newTermio.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
-      break;
-    }
+  switch (brate) {
+  case 300:
+    newTermio.c_cflag = B300 | CS8 | CLOCAL | CREAD;
+    break;
+  case 1200:
+    newTermio.c_cflag = B1200 | CS8 | CLOCAL | CREAD;
+    break;
+  case 2400:
+    newTermio.c_cflag = B2400 | CS8 | CLOCAL | CREAD;
+    break;
+  case 4800:
+    newTermio.c_cflag = B4800 | CS8 | CLOCAL | CREAD;
+    break;
+  case 9600:
+    newTermio.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
+    break;
+  case 19200:
+    newTermio.c_cflag = B19200 | CS8 | CLOCAL | CREAD;
+    break;
+  case 38400:
+    newTermio.c_cflag = B38400 | CS8 | CLOCAL | CREAD;
+    break;
+  case 57600:
+    newTermio.c_cflag = B57600 | CS8 | CLOCAL | CREAD;
+    break;
+  case 115200:
+    newTermio.c_cflag = B115200 | CS8 | CLOCAL | CREAD;
+    break;
+  default:
+    newTermio.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
+    break;
+  }
   // Setting parity error is ignore.
   newTermio.c_iflag = IGNPAR;
   // Raw mode output.
@@ -146,22 +142,21 @@ int Serial_begin(int brate, char* devicePath)
   // Return file descriptor.
   return (fd);
 }
-void Serial_end(int fd)
-{
-  if (fd >= 0)
-    {
-      tcsetattr(fd, TCSANOW, &oldTermio);
-      close(fd);
-    }
+
+void Serial_end(int fd) {
+  if (fd >= 0) {
+    tcsetattr(fd, TCSANOW, &oldTermio);
+    close(fd);
+  }
 }
-int Serial_write(int fd, uint8_t pbyte)
-{
+
+int Serial_write(int fd, uint8_t pbyte) {
   ssize_t res;
   res = write(fd, &pbyte, 1);
   return (int)res;
 }
-uint8_t Serial_read(int fd)
-{
+
+uint8_t Serial_read(int fd) {
   uint8_t c;
   read(fd, (char *)&c, 1);
   return c;

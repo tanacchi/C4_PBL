@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
   int data;
   int i, j;
   char disp[64];
+  int is_touched = 0;
   OutputInit();
   while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) sprintf("Waiting for serial connection...\n");
   LcdInit();
@@ -38,9 +39,13 @@ int main(int argc, char *argv[])
   LcdScroll(10);
   LcdSelectFont(1);
   LcdText( 0, 2, 100, "Sart Serial Communication");
+
+  initSensor();
+  setSensorPort(CH_1,TOUCH, 0);
+
   for (i = 0; i < 500; i++)
     {
-      Serial_write(fd, 0x05);
+      Serial_write(fd, getSensor(CH_1));
       usleep(500000);
       for (j = 0; j < 4; j++)
         {
@@ -60,6 +65,7 @@ int main(int argc, char *argv[])
       }
       usleep(500);
     }
+  closeSensor();
   return 0;
 }
 int Serial_begin(int brate, char* devicePath)

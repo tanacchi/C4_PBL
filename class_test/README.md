@@ -2,6 +2,7 @@
 
 Bodycontrollerの実装に向けたテストを行う
 Serial通信はビット演算を利用して8ビットずつ送受信すること
+講義資料にのっとった定数の送受信（0x05）はおそらく同期通信するための識別子的なやつ
 
 * serial通信に必要なプログラム(SerialBeginなど)をclass内で実行するようにしてArduinoは呼び出すだけみたいな
 * EV3shield-EV3IntelligentBlockの相互通信(タッチセンサーとモーターのみ)

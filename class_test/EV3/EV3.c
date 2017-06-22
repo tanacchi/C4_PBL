@@ -18,11 +18,10 @@
 
 struct termios oldTermio;
 
-int Serial_begin(int brate, char* devicePath);
-void Serial_end(int fd);
-int Serial_write(int fd, uint8_t pbyte);
-uint8_t Serial_read(int fd);
-int analogToCentimeter(int analogValue);
+int serial_begin(int brate, char* devicePath);
+void serial_end(int fd);
+int serial_write(int fd, uint8_t pbyte);
+uint8_t serial_read(int fd);
 
 int main(int argc, char *argv[]) {
   int fd = -1;
@@ -32,21 +31,21 @@ int main(int argc, char *argv[]) {
   char disp[64];
   int is_touched = 0;
   OutputInit();
-  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
-    sprintf(disp, "Waiting for serial connection...\n");
   LcdInit();
   LcdRefresh();
-  LcdScroll(10);
   LcdSelectFont(1);
-  LcdText( 0, 2, 100, "Sart Serial Communication");
+  while ((fd = serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
+    LcdText(1, 2, 100, "Waiting for serial connection...");
+  LcdScroll(10);
+  LcdText( 0, 2, 100, "Starting Serial Communication");
 
   initSensor();
   setSensorPort(CH_1,TOUCH, 0);
 
   for (i = 0; i < 500; i++) {
-    Serial_write(fd, getSensor(CH_1));
+    serial_write(fd, getSensor(CH_1));
     usleep(500000);
-    for (j = 0; j < 4; j++) rcvByte[j] = Serial_read(fd);
+    for (j = 0; j < 4; j++) rcvByte[j] = serial_read(fd);
     data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
     
     printf("%d\n", data);
@@ -65,7 +64,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int Serial_begin(int brate, char* devicePath) {
+int serial_begin(int brate, char* devicePath) {
   int fd;
   struct termios newTermio;
   // open the device.
@@ -141,20 +140,20 @@ int Serial_begin(int brate, char* devicePath) {
   return (fd);
 }
 
-void Serial_end(int fd) {
+void serial_end(int fd) {
   if (fd >= 0) {
     tcsetattr(fd, TCSANOW, &oldTermio);
     close(fd);
   }
 }
 
-int Serial_write(int fd, uint8_t pbyte) {
+int serial_write(int fd, uint8_t pbyte) {
   ssize_t res;
   res = write(fd, &pbyte, 1);
   return (int)res;
 }
 
-uint8_t Serial_read(int fd) {
+uint8_t serial_read(int fd) {
   uint8_t c;
   read(fd, (char *)&c, 1);
   return c;

@@ -7,7 +7,9 @@
 
 class IBlockTouch {
   IBlockTouch();
+  ~IBlockTouch();
   void init();
+  bool is_pressed();
 private:
   unsigned char port;
 };
@@ -15,7 +17,8 @@ private:
 class Tester {
 public:
   Tester();
-  bool is_pressed();
+  ~Tester();
+  bool is_pressed(int);
   void run_motor(int);
 private:
   IBlockTouch  bock_touch[IBLOCK_TOUCH_NUM];

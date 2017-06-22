@@ -15,6 +15,8 @@
 
 #define BAUDRATE 9600
 #define MODEMDEVICE "/dev/ttyACM0"
+#define INPUT_PORT_MAX  4
+#define OUTPUT_PORT_MAX 4
 
 struct termios oldTermio;
 
@@ -29,7 +31,6 @@ int main(int argc, char *argv[]) {
   int data;
   int i, j;
   char disp[64];
-  int is_touched = 0;
   OutputInit();
   LcdInit();
   LcdRefresh();
@@ -40,24 +41,29 @@ int main(int argc, char *argv[]) {
   LcdText( 0, 2, 100, "Starting Serial Communication");
 
   initSensor();
-  setSensorPort(CH_1,TOUCH, 0);
+  for (i = 0; i < OUTPUT_PORT_MAX; i++)
+    setSensorPort(i, TOUCH, 0);  // serial_readで個数指定できるならしとく
 
-  for (i = 0; i < 500; i++) {
-    serial_write(fd, getSensor(CH_1));
+  uint8_t head_signal;
+  while ((head_signal = serial_read(fd)) != 0xff) {
     usleep(500000);
-    for (j = 0; j < 4; j++) rcvByte[j] = serial_read(fd);
-    data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
+    if (head_signal == 0x0f) {  // for sensor
+      uint8_t sensor_data = 0x00;
+      for (i = 0; i < INPUT_PORT_MAX; i++) (sensor_data << i) | getSensor(i);
+      serial_write(fd, getSensor(sensor_data));
+    }
+    else if (head_signal == 0xf0) {  // for motor
+      uint8_t motor_param[3];
+      for (i = 0; i < 4; i++) motor_param[i] = serial_read(fd);
+      OnFwdEx(motor_param[0], (char)motor_param[1]);
+      Wait(motor_param[2]);
+      Off(motor_param[0]);
+    }
     
-    printf("%d\n", data);
-    sprintf(disp, "%d %d", i, data);
+    sprintf(disp, "%d %d", i, MotorTachoCount(CH_1));
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
     
-    if (i%100) {
-      OnFwdEx(OUT_B,70,0); 
-      Wait(100); 
-      Off(OUT_B); 
-    }
     usleep(500);
   }
   closeSensor();

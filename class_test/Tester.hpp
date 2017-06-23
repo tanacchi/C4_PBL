@@ -5,9 +5,9 @@
 #define IBLOCK_TOUCH_NUM 3
 #define SHIELD_TOUCH_NUM (6 - IBLOCK_TOUCH_NUM)
 
-class IBlockTouch {
-  IBlockTouch() = default;
-  ~IBlockTouch()  =default;
+class Ev3Block {
+  Ev3Block() = default;
+  ~Ev3Block() = default;
   void init(int port);
   bool is_pressed();
 private:

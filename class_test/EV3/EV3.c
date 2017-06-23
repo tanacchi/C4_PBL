@@ -48,19 +48,18 @@ int main(int argc, char *argv[]) {
     usleep(500000);
     for (i = 0; i < 4; i++) serial_receiver[i] = serial_read(fd);
 
-    uint8_t head_signal = serial_receiver[0];
-    if (head_signal == 0x0f) {  // for sensor
+    if (serial_receiver[0] == 0x0f) {  // for sensor
       uint8_t sensor_data = 0x00;
       for (i = 0; i < INPUT_PORT_MAX; i++) (sensor_data << i) | getSensor(i);
       serial_write(fd, getSensor(sensor_data));
     }
-    else if (head_signal == 0xf0) {  // for motor
+    else if (serial_receiver[0] == 0xf0) {  // for motor
       for (i = 0; i < 4; i++) motor_param[i] = serial_read(fd);
       OnFwdEx(serial_receiver[1], (char)serial_receiver[2], 0);
       Wait(serial_receiver[3]);
       Off(serial_receiver[1]);
     }
-    else if (head_signal == 0xff) break; // for end
+    else if (serial_receiver[0] == 0xff) break; // for end
     
     sprintf(disp, "%d %d", i, MotorTachoCount(CH_1));
     LcdScroll(10);

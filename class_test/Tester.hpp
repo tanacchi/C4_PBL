@@ -9,7 +9,7 @@ class Ev3Block {
   Ev3Block() = default;
   ~Ev3Block() = default;
   void init(int port);
-  bool is_pressed();
+  unsigned char get_ev_sensor();
 private:
   unsigned char port;
 };

@@ -21,6 +21,7 @@ public:
   ~Tester();
   int get_sensor();
   void run_motor(int);
+  int get_two_pow(unsigned int n);
 private:
   Ev3Block     ev3_block;
   EVs_EV3Touch shield_touch[SHIELD_TOUCH_NUM];

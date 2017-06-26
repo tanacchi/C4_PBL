@@ -12,6 +12,7 @@ void setup() {
 }
 
 void loop() {
-  if (tester.is_pressed(1)) tester.run_motor(4);
-  if (tester.is_pressed(4)) tester.run_motor(1);
+  int sensor = tester.get_sensor();
+  if (sensor == 1) run_motor(4);
+  if (sensor == 4) run_motor(1);
 }

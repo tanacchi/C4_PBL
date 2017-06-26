@@ -42,14 +42,22 @@ int Tester::get_sensor() {
   unsigned char sensor_byte = 0x00;
   sensor_byte |= (ev3_block.get_ev_sensor() << 1);
   for (int i = 0; i < SHIELD_TOUCH_NUM; i++)
-    sensor_byte |= (shield_touch[i].isPressed() << (i+IBLOCK_TOUCH_NUM));
-  
+    sensor_byte |= (shield_touch[i].isPressed() << (i+IBLOCK_TOUCH_NUM));  
+  for (int i = 0; i < 6; i++)
+    if (sensor_byte == get_two_pow(i)) return i+1;
+  return 0;
+}
+
+int Tester::get_two_pow(unsigned int n) {
+  int answer = 1;
+  for (int i = 0; i < n; i++) answer *= 2;
+  return answer;
 }
 
 void Tester::run_motor(int ch) {
   if (0 < ch && ch <= IBLOCK_TOUCH_NUM) run_ev_motor(ch);
   else if (ch <= 6) {
-    evshield.bank_a.motorRunDegrees(SH_Motor_1,
+    evshield.bank_a.motorRunDegrees(ch - 4,
                                     SH_Direction_Reverse,
                                     10,
                                     30,

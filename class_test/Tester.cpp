@@ -1,7 +1,7 @@
 #include "Tester.hpp"
 
 Ev3Block::Ev3Block() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 Ev3Block::~Ev3Block() {
@@ -14,8 +14,9 @@ void Ev3Block::init(int ch)
 
 unsigned char Ev3Block::get_ev_sensor() {
   unsigned char sensor_byte = 0x00;
-  while (Serial.read() != 0xff) delay(10);
+  if (Serial.available <= 0 || Serial.read() != 0xff) ;
   for (int i = 0; i < 4; i++) Serial.write(0x0f);
+  delay(10);
   sensor_byte = Serial.read();
   return sensor_byte;
 }

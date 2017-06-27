@@ -28,7 +28,6 @@ uint8_t serial_read(int fd);
 int main(int argc, char *argv[]) {
   int fd = -1;
   int data;
-  int i, j;
   char disp[64];
   OutputInit();
   LcdInit();
@@ -42,11 +41,13 @@ int main(int argc, char *argv[]) {
   initSensor();
   for (i = 0; i < OUTPUT_PORT_MAX; i++) setSensorPort(i, TOUCH, 0);  // serial_readで個数指定できるならしとく
 
-  uint8_t serial_receiver[4];
-  while (1) {
+  uint8_t serial_receiver[16];
+  int i;
+  while (i = 0; i < 500; i++) {
     serial_write(fd, 0xff);
     usleep(500000);
-    for (i = 0; i < 4; i++) serial_receiver[i] = serial_read(fd);
+    int j;
+    for (j = 0; j < 4; j++) serial_receiver[j] = serial_read(fd);
 
     if (serial_receiver[0] == 0x0f) {  // for sensor
       uint8_t sensor_byte = 0x00;
@@ -61,7 +62,7 @@ int main(int argc, char *argv[]) {
     }
     else if (serial_receiver[0] == 0xff) break; // for end
     
-    sprintf(disp, "%d %d", i, MotorTachoCount(CH_1));
+    sprintf(disp, "%d %d", i, serial_receiver[0]);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);    
     usleep(500);

@@ -29,9 +29,13 @@ void Ev3Block::run_ev_motor(int ch) {
   delay(11);
 }
 
-Tester::Tester() :ev3_block(),
-    evshield(0x34, 0x36)
+Tester::Tester()
+  :  ev3_block(),
+     evshield(0x34, 0x36)
 {
+  evshield.init(SH_Hardwarel2C);
+  for (int i = 0; i < SHIELD_TOUCH_NUM; i++)
+    shield_touch.init(&evshield, i);
 }
 
 Tester::~Tester()
@@ -66,3 +70,4 @@ void Tester::run_motor(int ch) {
     delay(30);
   }
 }
+

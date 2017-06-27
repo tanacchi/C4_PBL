@@ -17,7 +17,7 @@ unsigned char Ev3Block::get_ev_sensor() {
   while (Serial.read() != 0xff) delay(10);
   for (int i = 0; i < 4; i++) Serial.write(0x0f);
   sensor_byte = Serial.read();
-  return sensor_data;
+  return sensor_byte;
 }
 
 void Ev3Block::run_ev_motor(int ch) {
@@ -29,8 +29,8 @@ void Ev3Block::run_ev_motor(int ch) {
   delay(11);
 }
 
-Tester::Tester():
-  ev3_block();
+Tester::Tester() :ev3_block(),
+    evshield(0x34, 0x36)
 {
 }
 
@@ -55,7 +55,7 @@ int Tester::get_two_pow(unsigned int n) {
 }
 
 void Tester::run_motor(int ch) {
-  if (0 < ch && ch <= IBLOCK_TOUCH_NUM) run_ev_motor(ch);
+  if (0 < ch && ch <= IBLOCK_TOUCH_NUM) ev3_block.run_ev_motor(ch);
   else if (ch <= 6) {
     evshield.bank_a.motorRunDegrees(ch - 4,
                                     SH_Direction_Reverse,

@@ -50,11 +50,11 @@ int main(int argc, char *argv[]) {
 
     if (serial_receiver[0] == 0x0f) {  // for sensor
       uint8_t sensor_byte = 0x00;
-      for (i = 0; i < INPUT_PORT_MAX; i++) sensor_byte =| (getSensor(i) << i);
+      for (i = 0; i < INPUT_PORT_MAX; i++) sensor_byte |= (getSensor(i) << i);
       serial_write(fd, sensor_byte);
     }
     else if (serial_receiver[0] == 0xf0) {  // for motor
-      for (i = 0; i < 4; i++) motor_param[i] = serial_read(fd);
+      for (i = 0; i < 4; i++) serial_receiver[i] = serial_read(fd);
       OnFwdEx(serial_receiver[1], (char)serial_receiver[2], 0);
       Wait(serial_receiver[3]);
       Off(serial_receiver[1]);

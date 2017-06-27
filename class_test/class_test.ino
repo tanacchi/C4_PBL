@@ -1,6 +1,6 @@
 #include "Tester.hpp"
 
-Tester tester();
+Tester tester;
 
 // sensor1 << EV3     CH_1
 // sensor4 << Shileld SH_BAS1
@@ -13,6 +13,6 @@ void setup() {
 
 void loop() {
   int sensor = tester.get_sensor();
-  if (sensor == 1) run_motor(4);
-  if (sensor == 4) run_motor(1);
+  if (sensor == 1) tester.run_motor(4);
+  if (sensor == 4) tester.run_motor(1);
 }

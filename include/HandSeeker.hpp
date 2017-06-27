@@ -1,14 +1,15 @@
 #ifndef HAND_SEEKER_H_
 #define HAND_SEEKER_H_
 
+#include <iostream>
 #include "../include/VirtualPlate.hpp"
 
 class HandSeeker {
   VirtualPlate myplate_;
   bool hand_list_[PLATE_WIDTH];
   HandSeeker* sub_;
-  const unsigned int max_depth_; // <- byte ??
-  unsigned int mydepth_;    // <- byte ??
+  const unsigned int max_depth_;
+  unsigned int mydepth_;
   int branch_;
  public:
   HandSeeker();

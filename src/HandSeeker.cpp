@@ -13,6 +13,7 @@ HandSeeker::HandSeeker()
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ { src.myplate_ },
     sub_ { src.sub_ },
+    hand_list_ { init_list() },
     max_depth_ { src.max_depth_ },
     mydepth_ { src.mydepth_ },
     branch_ { 0 }

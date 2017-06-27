@@ -41,26 +41,26 @@ int main() {
   
   VirtualPlate plate;
   show(plate);
-  
-  while (plate.can_continue()) { 
-    int input_x;
-    HandSeeker* seeker = new HandSeeker();
-    int buff = (*seeker)(plate);
-    seeker->record_list();
-    delete seeker;
-    do {
-      // std::cout << "Input hand !!/n> " << std::flush;
-      // std::cin >> input_x;
-      // std::cout.put('\n');
-      input_x = rand()%7;
-    } while (!plate.is_valid_hand(input_x));
-    for (int i = 0; i < 100000000; i++) ;
-    plate.insert(input_x);
-    show(plate);
-    if (plate.is_game_finish()) break;
-    plate.switch_active_stone();
+  for (int i = 0; i < 100; i++) {  
+    while (plate.can_continue()) { 
+      int input_x;
+      HandSeeker* seeker = new HandSeeker();
+      int buff = (*seeker)(plate);
+      seeker->record_list();
+      delete seeker;
+      do {
+        // std::cout << "Input hand !!/n> " << std::flush;
+        // std::cin >> input_x;
+        // std::cout.put('\n');
+        input_x = rand()%7;
+      } while (!plate.is_valid_hand(input_x));
+      plate.insert(input_x);
+      show(plate);
+      if (plate.is_game_finish()) break;
+      plate.switch_active_stone();
+    }
+    plate.init();
   }
-
   return 0;
 }
 

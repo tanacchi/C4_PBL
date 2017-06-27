@@ -2,7 +2,7 @@
 #define VIRTUAL_PLATE_H_
 
 #define PLATE_HEIGHT 6
-#define PLATE_WIDTH  7
+#define PLATE_WIDTH  6
 
 enum class Stone {
   Space,

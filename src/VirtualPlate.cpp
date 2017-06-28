@@ -74,3 +74,7 @@ int VirtualPlate::get_length(int x, int y, int dx, int dy) const {
     else break;
   return length;
 }
+
+Stone VirtualPlate::get_active_stone() const {
+  return active_stone_;
+}

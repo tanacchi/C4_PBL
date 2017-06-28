@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <thread>
+#include <chrono>
 
 #include "../include/VirtualPlate.hpp"
 #include "../include/HandSeeker.hpp"
@@ -41,7 +43,7 @@ int main() {
   
   VirtualPlate plate;
   show(plate);
-  for (int i = 0; i < 100; i++) {  
+  for (int i = 0; i < 10000; i++) {  
     while (plate.can_continue()) { 
       int input_x;
       HandSeeker* seeker = new HandSeeker();
@@ -54,6 +56,7 @@ int main() {
         // std::cout.put('\n');
         input_x = rand()%7;
       } while (!plate.is_valid_hand(input_x));
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
       plate.insert(input_x);
       show(plate);
       if (plate.is_game_finish()) break;

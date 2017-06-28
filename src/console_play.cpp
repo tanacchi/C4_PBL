@@ -45,8 +45,8 @@ int main() {
     while (plate.can_continue()) { 
       int input_x;
       HandSeeker* seeker = new HandSeeker();
-      int buff = (*seeker)(plate);
-      seeker->record_list();
+      float buff = (*seeker)(plate);
+      std::cout << seeker->get_list_score() << std::endl;
       delete seeker;
       do {
         // std::cout << "Input hand !!/n> " << std::flush;

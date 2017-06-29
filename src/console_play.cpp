@@ -47,19 +47,18 @@ int main() {
   while (plate.can_continue()) {
     turn++;
     int input_x;
-    HandSeeker* seeker = new HandSeeker();
-    float buff = (*seeker)(plate);
-    std::cout << seeker->get_list_score() << std::endl;
-    delete seeker;
     do {
       if (turn%2) {
-        std::cout << "Input hand !!/n> " << std::flush;
+        std::cout << "Input hand !!\n> " << std::flush;
         std::cin >> input_x;
         input_x;
         std::cout.put('\n');
       }
       else {
-        input_x = rand()%6;
+        HandSeeker* seeker = new HandSeeker();
+        input_x = (*seeker)(plate);
+        std::cout << seeker->get_list_score() << std::endl;
+        delete seeker;
       }
     } while (!plate.is_valid_hand(input_x));
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

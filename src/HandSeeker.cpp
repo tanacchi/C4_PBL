@@ -6,7 +6,7 @@ HandSeeker::HandSeeker()
     hand_list_{0, 0, 0, 0, 0, 0},
     sub_ {0},
     mystone_{Stone::Space},
-    max_depth_ {3},
+    max_depth_ {4},
     mydepth_ {0}
 {
 }
@@ -51,11 +51,13 @@ float HandSeeker::evaluate_plate() {
   for (short i = 0; i < 4; i++)
     for (short y = 0; y < PLATE_HEIGHT; y++)
       for (short x = 0; x < PLATE_WIDTH; x++)
-        if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score += 30;
+        if (myplate_.get_length(x, y, dx[i], dy[i]) > 3) score += 30;
+        else if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score += 15;
   myplate_.switch_active_stone();
   for (short i = 0; i < 4; i++)
     for (short y = 0; y < PLATE_HEIGHT; y++)
       for (short x = 0; x < PLATE_WIDTH; x++)
-        if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score -= 30;
+        if (myplate_.get_length(x, y, dx[i], dy[i]) > 3) score -= 30;
+        else if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score -= 15;
   return score / mydepth_+1;
 }

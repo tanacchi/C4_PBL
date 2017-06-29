@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
       LcdScroll(10);
       LcdText( 1, 2, 100, disp);
 
-      if (data > 300) {
+      if (data) {
         OnFwdEx(OUT_AB,70,0); //AB Port Motor Start Power 70
         Wait(100); //Wait 100msec
         Off(OUT_AB); //AB Port Motor Stop

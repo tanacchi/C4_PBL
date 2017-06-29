@@ -23,9 +23,11 @@ int HandSeeker::operator()(VirtualPlate game_plate) {
   myplate_ = game_plate;
   mystone_ = myplate_.get_active_stone();
   get_list_score();
-  for (int i = 0; i < PLATE_WIDTH; i++)
-    std::cout << "score [" << i << "] = " << hand_list_[i] << std::endl;;
-  return 0;
+  int maximum = 0;
+  for (int j = 1; j < 5; j++) if (hand_list_[j] > hand_list_[maximum]) maximum = j;
+  // for (int i = 0; i < PLATE_WIDTH; i++)
+  //   std::cout << "score [" << i << "] = " << hand_list_[i] << std::endl;;
+  return maximum;
 }
 float HandSeeker::get_list_score() {
   if ((max_depth_ - mydepth_) < 0) return evaluate_plate();
@@ -44,5 +46,16 @@ float HandSeeker::get_list_score() {
 }
 
 float HandSeeker::evaluate_plate() {
-  return 3.00;
+  if (myplate_.get_active_stone() != mystone_) myplate_.switch_active_stone();
+  float score = 0;
+  for (short i = 0; i < 4; i++)
+    for (short y = 0; y < PLATE_HEIGHT; y++)
+      for (short x = 0; x < PLATE_WIDTH; x++)
+        if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score += 30;
+  myplate_.switch_active_stone();
+  for (short i = 0; i < 4; i++)
+    for (short y = 0; y < PLATE_HEIGHT; y++)
+      for (short x = 0; x < PLATE_WIDTH; x++)
+        if (myplate_.get_length(x, y, dx[i], dy[i]) > 2) score -= 30;
+  return score / mydepth_+1;
 }

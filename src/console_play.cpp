@@ -43,26 +43,30 @@ int main() {
   
   VirtualPlate plate;
   show(plate);
-  for (int i = 0; i < 10000; i++) {  
-    while (plate.can_continue()) { 
-      int input_x;
-      HandSeeker* seeker = new HandSeeker();
-      float buff = (*seeker)(plate);
-      std::cout << seeker->get_list_score() << std::endl;
-      delete seeker;
-      do {
-        // std::cout << "Input hand !!/n> " << std::flush;
-        // std::cin >> input_x;
-        // std::cout.put('\n');
-        input_x = rand()%7;
-      } while (!plate.is_valid_hand(input_x));
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
-      plate.insert(input_x);
-      show(plate);
-      if (plate.is_game_finish()) break;
-      plate.switch_active_stone();
-    }
-    plate.init();
+  int turn = 0;
+  while (plate.can_continue()) {
+    turn++;
+    int input_x;
+    HandSeeker* seeker = new HandSeeker();
+    float buff = (*seeker)(plate);
+    std::cout << seeker->get_list_score() << std::endl;
+    delete seeker;
+    do {
+      if (turn%2) {
+        std::cout << "Input hand !!/n> " << std::flush;
+        std::cin >> input_x;
+        input_x;
+        std::cout.put('\n');
+      }
+      else {
+        input_x = rand()%6;
+      }
+    } while (!plate.is_valid_hand(input_x));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    plate.insert(input_x);
+    show(plate);
+    if (plate.is_game_finish()) break;
+    plate.switch_active_stone();
   }
   return 0;
 }

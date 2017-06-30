@@ -26,12 +26,19 @@ int HandSeeker::operator()(VirtualPlate game_plate)
   myplate_ = game_plate;
   mystone_ = myplate_.get_active_stone();
   get_list_score();
-  int maximum = 0;
-  for (int i = 0; i < PLATE_WIDTH; i++)
-    if (hand_list_[i] > hand_list_[maximum]) maximum = i;
+  for (int i = 0; i < PLATE_WIDTH; i++) {
+    int maximum = i;
+    for (int j = i; j < PLATE_WIDTH; j++)
+      if (hand_list_[j] > hand_list_[maximum]) maximum = j;
+    float buff = hand_list_[i];
+    hand_list_[i] = hand_list_[maximum];
+    hand_list_[maximum] = buff;
+  }
+  int best_pos = 0;
+  while (!hand_list_[best_pos]) best_pos++;
   for (int i = 0; i < PLATE_WIDTH; i++)
     std::cout << "score [" << i << "] = " << hand_list_[i] << std::endl;  
-  return maximum;
+  return best_pos;
 }
 
 float HandSeeker::get_list_score()

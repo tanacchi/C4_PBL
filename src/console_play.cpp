@@ -16,14 +16,16 @@ enum class Task {
   Ed
 };
 
-char to_char(Stone stone) {
+char to_char(Stone stone)
+{
   return
     (stone == Stone::Red)  ? 'O':
     (stone == Stone::Blue) ? 'X':
     ' ';
 }
 
-void show(VirtualPlate game_plate) {
+void show(VirtualPlate game_plate)
+{
   std::cout << "-----------------" << std::endl;
   std::cout << "| ";
   for (int i = 0; i < PLATE_WIDTH; i++) std::cout << i << ' ';
@@ -37,8 +39,8 @@ void show(VirtualPlate game_plate) {
   std::cout << "-----------------" << std::endl;
 }
 
-int main() {
-
+int main()
+{
   srand((unsigned)time(NULL));
   
   VirtualPlate plate;

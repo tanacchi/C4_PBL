@@ -1,9 +1,14 @@
 #include "../include/HandSeeker.hpp"
 #include <iostream>
 
+HandList::HandList()
+  : position_ {0},
+    score_ {0}
+{
+}
+
 HandSeeker::HandSeeker()
   : myplate_(),
-    hand_list_{0, 0, 0, 0, 0, 0},
     sub_ {0},
     mystone_{Stone::Space},
     max_depth_ {2},
@@ -13,12 +18,12 @@ HandSeeker::HandSeeker()
 
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ {src.myplate_},
-    hand_list_{0, 0, 0, 0, 0, 0},
     sub_ {0},
     mystone_ {src.mystone_},
     max_depth_ {src.max_depth_},
     mydepth_ {src.mydepth_}
 {
+  for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
 
 int HandSeeker::operator()(VirtualPlate game_plate)
@@ -29,16 +34,16 @@ int HandSeeker::operator()(VirtualPlate game_plate)
   for (int i = 0; i < PLATE_WIDTH; i++) {
     int maximum = i;
     for (int j = i; j < PLATE_WIDTH; j++)
-      if (hand_list_[j] > hand_list_[maximum]) maximum = j;
-    float buff = hand_list_[i];
+      if (hand_list_[j].score_ > hand_list_[maximum].score_) maximum = j;
+    HandList buff = hand_list_[i];
     hand_list_[i] = hand_list_[maximum];
     hand_list_[maximum] = buff;
   }
   int best_pos = 0;
-  while (!hand_list_[best_pos]) best_pos++;
+  while (!hand_list_[best_pos].score_) best_pos++;
   for (int i = 0; i < PLATE_WIDTH; i++)
-    std::cout << "score [" << i << "] = " << hand_list_[i] << std::endl;  
-  return best_pos;
+    std::cout << "score [" << i << "] = " << hand_list_[i].score_ << std::endl;  
+  return hand_list_[best_pos].position_;
 }
 
 float HandSeeker::get_list_score()
@@ -50,12 +55,12 @@ float HandSeeker::get_list_score()
     sub_->mydepth_++;
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
-    hand_list_[i] = sub_->get_list_score();
-    show(sub_->myplate_);
+    hand_list_[i].score_ = sub_->get_list_score();
+    //    show(sub_->myplate_);
     delete sub_;
   }
   float sum = 0;
-  for (int i = 0; i < PLATE_WIDTH; i++) sum += hand_list_[i];
+  for (int i = 0; i < PLATE_WIDTH; i++) sum += hand_list_[i].score_;
   return sum/PLATE_WIDTH;
 }
 

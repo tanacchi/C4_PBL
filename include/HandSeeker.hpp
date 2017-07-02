@@ -1,5 +1,13 @@
 #include "VirtualPlate.hpp"
 
+class HandList {
+public:
+  HandList();
+  ~HandList() = default;
+  int position_;
+  float score_;
+};
+
 class HandSeeker {
 public:
   HandSeeker();
@@ -11,7 +19,7 @@ public:
 private:
   const HandSeeker& operator=(const HandSeeker&);
   VirtualPlate myplate_;
-  float hand_list_[PLATE_WIDTH];
+  HandList hand_list_[PLATE_WIDTH];
   HandSeeker* sub_;
   Stone mystone_;
   const unsigned short max_depth_;

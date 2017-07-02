@@ -7,6 +7,12 @@ HandList::HandList()
 {
 }
 
+HandList::HandList(const HandList& src)
+  : position_ {src.position_},
+    score_ {src.score_}
+{
+}
+
 HandSeeker::HandSeeker()
   : myplate_(),
     sub_ {0},
@@ -14,6 +20,7 @@ HandSeeker::HandSeeker()
     max_depth_ {2},
     mydepth_ {0}
 {
+  for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
 
 HandSeeker::HandSeeker(const HandSeeker& src)
@@ -42,7 +49,8 @@ int HandSeeker::operator()(VirtualPlate game_plate)
   int best_pos = 0;
   while (!hand_list_[best_pos].score_) best_pos++;
   for (int i = 0; i < PLATE_WIDTH; i++)
-    std::cout << "score [" << i << "] = " << hand_list_[i].score_ << std::endl;  
+    std::cout << hand_list_[i].position_ << ' ' << hand_list_[i].score_ << std::endl;
+  std::cout << "best position is " << hand_list_[best_pos].position_ << std::endl;
   return hand_list_[best_pos].position_;
 }
 

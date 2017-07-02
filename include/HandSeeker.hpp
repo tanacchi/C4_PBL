@@ -3,6 +3,7 @@
 class HandList {
 public:
   HandList();
+  HandList(const HandList& src);
   ~HandList() = default;
   int position_;
   float score_;

@@ -59,7 +59,6 @@ int main()
       else {
         HandSeeker* seeker = new HandSeeker();
         input_x = (*seeker)(plate);
-        std::cout << seeker->get_list_score() << std::endl;
         delete seeker;
       }
     } while (!plate.is_valid_hand(input_x));

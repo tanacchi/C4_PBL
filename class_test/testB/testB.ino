@@ -15,54 +15,55 @@ void setup()
 void loop() 
 {
 
-if (Serial.available() > 0 && Serial.read() == 0x05) {
-  byte sensor_data = Serial_read();   // タイムラグが怖い
+  if (Serial.available() > 0 && Serial.read() == 0x05) {
+    byte sensor_data = Serial_read();   // タイムラグが怖い
 
-  int i;
-  if (sensor_data == 8) {
-    evshield.bank_a.motorRunDegrees(SH_Motor_1,
-    SH_Direction_Forward, 5,
-    60,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-    evshield.bank_a.motorRunDegrees(SH_Motor_1,
-    SH_Direction_Reverse,
-    5,
-    90,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-  } 
-  else if (sensor_data == 4){
-    evshield.bank_a.motorRunDegrees(SH_Motor_2,
-    SH_Direction_Reverse,
-    5,
-    30,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-    //delay(5);
-  }
-   else if (sensor_data == 2) {
-    evshield.bank_b.motorRunDegrees(SH_Motor_1,
-    SH_Direction_Forward, 5,
-    60,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-    evshield.bank_a.motorRunDegrees(SH_Motor_1,
-    SH_Direction_Reverse,
-    5,
-    90,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-  } 
-  else if(sensor_data == 1) {
-    evshield.bank_b.motorRunDegrees(SH_Motor_2,
-    SH_Direction_Reverse,
-    5,
-    30,
-    SH_Completion_Wait_For,
-    SH_Next_Action_BrakeHold);
-    //delay(5);
-  }
+    int i;
+    if (sensor_data == 8) {
+      evshield.bank_a.motorRunDegrees(SH_Motor_1,
+      SH_Direction_Forward, 5,
+      60,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+      evshield.bank_a.motorRunDegrees(SH_Motor_1,
+      SH_Direction_Reverse,
+      5,
+      90,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+    } 
+    else if (sensor_data == 4){
+      evshield.bank_a.motorRunDegrees(SH_Motor_2,
+      SH_Direction_Reverse,
+      5,
+      30,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+      //delay(5);
+    }
+    else if (sensor_data == 2) {
+      evshield.bank_b.motorRunDegrees(SH_Motor_1,
+      SH_Direction_Forward, 5,
+      60,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+      evshield.bank_a.motorRunDegrees(SH_Motor_1,
+      SH_Direction_Reverse,
+      5,
+      90,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+    } 
+    else if(sensor_data == 1) {
+      evshield.bank_b.motorRunDegrees(SH_Motor_2,
+      SH_Direction_Reverse,
+      5,
+      30,
+      SH_Completion_Wait_For,
+      SH_Next_Action_BrakeHold);
+      //delay(5);
+    }
   }
 }
+
 

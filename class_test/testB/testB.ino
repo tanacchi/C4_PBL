@@ -1,8 +1,15 @@
 #include <Wire.h>
 #include <EVShield.h>
 EVShield evshield(0x34, 0x36);
+
+byte receive_data[24];
+
 void setup()
 {
+  for (int i = 0; i < 6; i++)
+    receive_data[i] = 0x00;
+  receive_data[0] = 0x02;
+  receive_data[5] = 0x03;
   Serial.begin(9600); // start serial for output
   delay(2000); // wait two seconds, allowing time to // activate the serial monitor
   char str[40]; 
@@ -12,11 +19,11 @@ void setup()
 }
 void loop() 
 {
-  if (Serial.available() > 0 /*&& Serial.read() == 0x05*/) {
-    byte sensor_data = Serial.read();  
-    Serial.write(sensor_data);
+  if (Serial.available() > 0) {
+    if (Serial.read() == 0x05)o
+      for (int i = 0; i < 6; i++) receive_data[i] = Serial.read();
 
-    if (sensor_data == 8) {
+    if (receive_data[1] == 1) {
       evshield.bank_a.motorRunDegrees(SH_Motor_1,
       SH_Direction_Forward, 5,
       60,
@@ -29,7 +36,7 @@ void loop()
       SH_Completion_Wait_For,
       SH_Next_Action_BrakeHold);
     } 
-    else if (sensor_data == 4){
+    if (receive_data[2] == 1){
       evshield.bank_a.motorRunDegrees(SH_Motor_2,
       SH_Direction_Reverse,
       5,
@@ -38,7 +45,7 @@ void loop()
       SH_Next_Action_BrakeHold);
       //delay(5);
     }
-    else if (sensor_data == 2) {
+    if (receive_data[3] == 1) {
       evshield.bank_b.motorRunDegrees(SH_Motor_1,
       SH_Direction_Forward, 5,
       60,
@@ -51,7 +58,7 @@ void loop()
       SH_Completion_Wait_For,
       SH_Next_Action_BrakeHold);
     } 
-    else if(sensor_data == 1) {
+    if(receive_data[4] == 1) {
       evshield.bank_b.motorRunDegrees(SH_Motor_2,
       SH_Direction_Reverse,
       5,
@@ -62,5 +69,6 @@ void loop()
     }
   }
 }
+
 
 

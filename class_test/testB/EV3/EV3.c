@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   int data;
   int i, j;
   char disp[64];
-  uint8_t sensor_data = 0;
+  uint8_t sensor_data[6];
   OutputInit();
   if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
     sprintf(disp, "Waiting for serial connection...\n");
@@ -49,24 +49,17 @@ int main(int argc, char *argv[]) {
     setSensorPort(i,TOUCH, 0);
 
   for (i = 0; i < 10000; i++) {
-    sensor_data = 0;
-   for (j = 0; j < 4; j++)
-     sensor_data |= (getSensor(j) << j);
-    printf("%d\n", sensor_data);
-    sprintf(disp, "%d %d", i, sensor_data);
-    LcdScroll(10);
-    LcdText( 1, 2, 100, disp);
-
-
-    Serial_write(fd, sensor_data);
+    Serial_write(fd, 0x05);
+    for (j = 1; j < 5; j++)
+      sensor_data[j] = getSensor(j-1);
+    for (j = 0; j < 6; j++)
+      Serial_write(fd, sensor_data[j]);
     usleep(5000);
 
+    sprintf(disp, "%d", i);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
-    
-
-    //LcdText( 1, 2, 100, sensor_data);
-    
+   
     usleep(500);
   }
   closeSensor();

@@ -12,12 +12,10 @@ void setup()
 }
 void loop() 
 {
-   //Serial.write(123);
   if (Serial.available() > 0 /*&& Serial.read() == 0x05*/) {
     byte sensor_data = Serial.read();  
-    //Serial.write(sensor_data);
+    Serial.write(sensor_data);
 
-    int i;
     if (sensor_data == 8) {
       evshield.bank_a.motorRunDegrees(SH_Motor_1,
       SH_Direction_Forward, 5,

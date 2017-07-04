@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
     setSensorPort(i,TOUCH, 0);
 
   for (i = 0; i < 10000; i++) {
-    //Serial_write(fd, 0x05);
     sensor_data = 0;
    for (j = 0; j < 4; j++)
      sensor_data |= (getSensor(j) << j);
@@ -62,10 +61,6 @@ int main(int argc, char *argv[]) {
     Serial_write(fd, sensor_data);
     usleep(5000);
 
-
-
-
-     
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
     

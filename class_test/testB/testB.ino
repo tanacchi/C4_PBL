@@ -9,14 +9,13 @@ void setup()
   evshield.init( SH_HardwareI2C );
   evshield.bank_a.motorReset();
   evshield.bank_b.motorReset();
-  Serial.println ("Press GO button to continue");
-  evshield.waitForButtonPress(BTN_GO);
 }
 void loop() 
 {
-
-  if (Serial.available() > 0 && Serial.read() == 0x05) {
-    byte sensor_data = Serial_read();   // タイムラグが怖い
+   //Serial.write(123);
+  if (Serial.available() > 0 /*&& Serial.read() == 0x05*/) {
+    byte sensor_data = Serial.read();  
+    //Serial.write(sensor_data);
 
     int i;
     if (sensor_data == 8) {

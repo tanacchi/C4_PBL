@@ -32,29 +32,45 @@ int main(int argc, char *argv[]) {
   char disp[64];
   uint8_t sensor_data = 0;
   OutputInit();
-  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
+  if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
     sprintf(disp, "Waiting for serial connection...\n");
+    usleep(500000);
+    exit -1;
+    }
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
+  
   LcdSelectFont(1);
-  LcdText( 0, 2, 100, "Sart Serial Communication");
+  LcdText( 0, 2, 100, "Start Serial Communication");
 
   initSensor();
   for (i = 0; i < 4; i++)
     setSensorPort(i,TOUCH, 0);
 
-  for (i = 0; i < 500; i++) {
-    Serial_write(fd, 0x05);
-    for (j = 0; j < 4; j++)
-      sensor_data |= (getSensor(i) << i);  // この辺怪しい
-    usleep(500000);
-    Serial_write(fd, sensor_data);    
-    
+  for (i = 0; i < 10000; i++) {
+    //Serial_write(fd, 0x05);
+    sensor_data = 0;
+   for (j = 0; j < 4; j++)
+     sensor_data |= (getSensor(j) << j);
     printf("%d\n", sensor_data);
     sprintf(disp, "%d %d", i, sensor_data);
     LcdScroll(10);
-    LcdText( 1, 2, 100, sensor_data);
+    LcdText( 1, 2, 100, disp);
+
+
+    Serial_write(fd, sensor_data);
+    usleep(5000);
+
+
+
+
+     
+    LcdScroll(10);
+    LcdText( 1, 2, 100, disp);
+    
+
+    //LcdText( 1, 2, 100, sensor_data);
     
     usleep(500);
   }

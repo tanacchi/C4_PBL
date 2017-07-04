@@ -6,13 +6,7 @@
 #include "HandSeeker.hpp"
 
 enum class Task {
-  Init,
-  Op,
-  Select,
-  Put,
-  Judge,
-  Ed,
-  Close
+  Init, Op, Select, Put, Judge, Ed, Close
 };
 
 class GameMaster {
@@ -23,7 +17,6 @@ public:
   Task task_init();
   Task task_op();
   Task task_select();
-  Task task_insert();
   Task task_put();
   Task task_judge();
   Task task_ed();
@@ -33,8 +26,8 @@ private:
   VirtualPlate plate_;
   BodyController body_;
   HandSeeler* seeker_;
-  unsigned char turn_;
-  unsigned char select_x_;
+  int turn_;
+  int select_x_;
 };
 
 #endif // GAME_MASTER_H_

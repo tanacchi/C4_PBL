@@ -75,13 +75,16 @@ float HandSeeker::get_list_score()
 float HandSeeker::evaluate_plate()
 {
   if (myplate_.get_active_stone() != mystone_) myplate_.switch_active_stone();
-  float score = 0;
+  float score = 0.1;
   for (short i = 0; i < 4; i++)
     for (short y = 0; y < PLATE_HEIGHT; y++)
       for (short x = 0; x < PLATE_WIDTH; x++) {
-        if (myplate_.get_length(x, y, dx[i], dy[i]) > 3) score += 30;
+        int length_buff = 0;
+        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3)
+          score += length_buff*30;
         myplate_.switch_active_stone();
-        if (myplate_.get_length(x, y, dx[i], dy[i]) > 3) score -= 50;
+        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3)
+          score -= length_buff*50;
         myplate_.switch_active_stone();
       }
   return score / mydepth_+1/10;

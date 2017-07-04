@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
         {
           rcvByte[j] = Serial_read(fd);
         }
+    data = 0;
       data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
 
       printf("%d\n", data);

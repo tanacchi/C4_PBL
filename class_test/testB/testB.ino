@@ -20,7 +20,7 @@ void setup()
 void loop() 
 {
   if (Serial.available() > 0) {
-    if (Serial.read() == 0x05)o
+    if (Serial.read() == 0x05)
       for (int i = 0; i < 6; i++) receive_data[i] = Serial.read();
 
     if (receive_data[1] == 1) {

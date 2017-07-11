@@ -20,10 +20,11 @@ void setup()
 void loop() 
 {
   if (Serial.available() > 0) {
-    if (Serial.read() == 0x05)
-      for (int i = 0; i < 6; i++) receive_data[i] = Serial.read();
+    receive_data[2] = 0;
+    Serial.write(0x05);
+      for (int i = 0; i < 4; i++) receive_data[i] = Serial.read();
 
-    if (receive_data[1] == 1) {
+    if (receive_data[2] == 1) {
       evshield.bank_a.motorRunDegrees(SH_Motor_1,
       SH_Direction_Forward, 5,
       60,
@@ -36,7 +37,7 @@ void loop()
       SH_Completion_Wait_For,
       SH_Next_Action_BrakeHold);
     } 
-    if (receive_data[2] == 1){
+    if (receive_data[2] == 2){
       evshield.bank_a.motorRunDegrees(SH_Motor_2,
       SH_Direction_Reverse,
       5,
@@ -45,7 +46,7 @@ void loop()
       SH_Next_Action_BrakeHold);
       //delay(5);
     }
-    if (receive_data[3] == 1) {
+    if (receive_data[2] == 4) {
       evshield.bank_b.motorRunDegrees(SH_Motor_1,
       SH_Direction_Forward, 5,
       60,
@@ -58,7 +59,7 @@ void loop()
       SH_Completion_Wait_For,
       SH_Next_Action_BrakeHold);
     } 
-    if(receive_data[4] == 1) {
+    if(receive_data[2] == 8) {
       evshield.bank_b.motorRunDegrees(SH_Motor_2,
       SH_Direction_Reverse,
       5,

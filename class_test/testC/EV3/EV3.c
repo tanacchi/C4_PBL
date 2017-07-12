@@ -30,36 +30,31 @@ int main(int argc, char *argv[]) {
   int data;
   int i, j;
   char disp[64];
-  int is_touched = 0;
+  uint8_t sensor_data;
+  uint8_t tmp = 0x04;
   OutputInit();
-  while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
+  if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
     sprintf(disp, "Waiting for serial connection...\n");
+    usleep(500000);
+    exit -1;
+  }
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
   LcdSelectFont(1);
-  LcdText( 0, 2, 100, "Sart Serial Communication");
+  LcdText( 0, 2, 100, "Start Serial Communication");
 
   initSensor();
-  setSensorPort(CH_1,TOUCH, 0);
+  for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
-  for (i = 0; i < 500; i++) {
-    Serial_write(fd, getSensor(CH_1));
-    usleep(500000);
-    for (j = 0; j < 4; j++) rcvByte[j] = Serial_read(fd);
-    data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
+  for (i = 0; i < 10000; i++) {
+    sensor_data = 0;
+    for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
+    Serial_write(fd, sensor_data);
     
-    printf("%d\n", data);
-    sprintf(disp, "%d %d", i, data);
+    sprintf(disp, "%d:data=%d:res=%d", i, sensor_data, Serial_read(fd));
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
-    
-    if (i%100) {
-      OnFwdEx(OUT_B,70,0); 
-      Wait(100); 
-      Off(OUT_B); 
-    }
-    usleep(500);
   }
   closeSensor();
   return 0;

@@ -20,7 +20,7 @@ void loop()
 {
   if (Serial.available() > 0) {
     receive_data = Serial.read();
-    Serial.write(0x08);
+    // Serial.write(0x08);
     // Serial.write(receive_data);
     if (receive_data == 1) {
       evshield.bank_a.motorRunDegrees(
@@ -62,8 +62,3 @@ void loop()
     }
   }
 }
-
-
-
-
-

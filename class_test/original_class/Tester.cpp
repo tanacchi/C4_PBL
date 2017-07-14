@@ -19,7 +19,7 @@ Tester::Tester()
      evshield(0x34, 0x36)
 {
   evshield.init(SH_Hardwarel2C);
-  for (int i = 0; i < SHIELD_TOUCH_NUM; i++) shield_touch.init(&evshield, i);
+  for (int i = 0; i < SHIELD_TOUCH_NUM; i++) shield_touch[i].init(&evshield, i);
   evshield.bank_a.motorReset();
 }
 

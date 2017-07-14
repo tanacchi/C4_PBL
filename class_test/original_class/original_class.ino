@@ -12,8 +12,9 @@ void setup() {
 }
 
 void loop() {
-  int sensor = 0;
-  while (!(sensor = tester.get_sensor())) ;
-  if (sensor == 1) tester.run_motor(3);
-  if (sensor == 3) tester.run_motor(1);
+  int sensor = tester.get_sensor();
+  Serial.write(0x09);
+ // while (!(sensor = tester.get_sensor())) ;
+  if (sensor == 5) tester.run_motor(1);
+  if (sensor == 6) tester.run_motor(0);
 }

@@ -1,33 +1,17 @@
 #include "Tester.hpp"
 
-Ev3Block::Ev3Block() {
-  Serial.begin(115200);
+Ev3Block::Ev3Block()
+{
+  Serial.begin(9600);
 }
 
-Ev3Block::~Ev3Block() {
-  Serial.write(0xff);
-}
-
-void Ev3Block::init(int ch)
+Ev3Block::~Ev3Block()
 {
 }
 
-unsigned char Ev3Block::get_ev_sensor() {
-  unsigned char sensor_byte = 0x00;
-  if (Serial.available <= 0 || Serial.read() != 0xff) ;
-  for (int i = 0; i < 4; i++) Serial.write(0x0f);
-  delay(10);
-  sensor_byte = Serial.read();
-  return sensor_byte;
-}
-
-void Ev3Block::run_ev_motor(int ch) {
-  while (Serial.read() != 0xff) delay(10);
-  Serial.write(0xf0);
-  Serial.write(1);
-  Serial.write(100);
-  Serial.write(11);
-  delay(11);
+unsigned char Ev3Block::get_ev_sensor()
+{
+  return Serial.read();
 }
 
 Tester::Tester()
@@ -35,17 +19,17 @@ Tester::Tester()
      evshield(0x34, 0x36)
 {
   evshield.init(SH_Hardwarel2C);
-  for (int i = 0; i < SHIELD_TOUCH_NUM; i++)
-    shield_touch.init(&evshield, i);
+  for (int i = 0; i < SHIELD_TOUCH_NUM; i++) shield_touch.init(&evshield, i);
+  evshield.bank_a.motorReset();
 }
 
 Tester::~Tester()
 {
 }
 
-int Tester::get_sensor() {
-  unsigned char sensor_byte = 0x00;
-  sensor_byte |= (ev3_block.get_ev_sensor() << 1);
+int Tester::get_sensor()
+{
+  unsigned char sensor_byte = ev3_block.get_ev_sensor();
   for (int i = 0; i < SHIELD_TOUCH_NUM; i++)
     sensor_byte |= (shield_touch[i].isPressed() << (i+IBLOCK_TOUCH_NUM));  
   for (int i = 0; i < 6; i++)
@@ -53,22 +37,22 @@ int Tester::get_sensor() {
   return 0;
 }
 
-int Tester::get_two_pow(unsigned int n) {
+int Tester::get_two_pow(unsigned int n)
+{
   int answer = 1;
   for (int i = 0; i < n; i++) answer *= 2;
   return answer;
 }
 
-void Tester::run_motor(int ch) {
-  if (0 < ch && ch <= IBLOCK_TOUCH_NUM) ev3_block.run_ev_motor(ch);
-  else if (ch <= 6) {
-    evshield.bank_a.motorRunDegrees(ch - 4,
+void Tester::run_motor(int ch)
+{
+    evshield.bank_a.motorRunDegrees(ch,
                                     SH_Direction_Reverse,
                                     10,
-                                    30,
+                                    300,
                                     SH_Completion_Dont_Wait,
                                     SH_Next_Action_Brake);
-    delay(30);
+    delay(100);
   }
 }
 

@@ -9,11 +9,7 @@ class Ev3Block {
 public:
   Ev3Block();
   ~Ev3Block();
-  void init(int port);
   unsigned char get_ev_sensor();
-  void run_ev_motor(int);
-private:
-  unsigned char port;
 };
 
 class Tester {

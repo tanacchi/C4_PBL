@@ -12,7 +12,8 @@ void setup() {
 }
 
 void loop() {
-  int sensor = tester.get_sensor();
-  if (sensor == 1) tester.run_motor(4);
-  if (sensor == 4) tester.run_motor(1);
+  int sensor = 0;
+  while (!(sensor = tester.get_sensor())) ;
+  if (sensor == 1) tester.run_motor(3);
+  if (sensor == 3) tester.run_motor(1);
 }

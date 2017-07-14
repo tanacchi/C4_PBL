@@ -16,7 +16,6 @@
 #define BAUDRATE 9600
 #define MODEMDEVICE "/dev/ttyACM0"
 #define INPUT_PORT_MAX  4
-#define OUTPUT_PORT_MAX 4
 
 struct termios oldTermio;
 
@@ -27,45 +26,36 @@ uint8_t serial_read(int fd);
 
 int main(int argc, char *argv[]) {
   int fd = -1;
+  uint8_t rcvByte[16];
   int data;
+  int i, j;
   char disp[64];
+  uint8_t sensor_data;
+  uint8_t tmp = 0x04;
   OutputInit();
+  if ((fd = serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
+    sprintf(disp, "Waiting for serial connection...\n");
+    usleep(500000);
+    exit -1;
+  }
   LcdInit();
   LcdRefresh();
-  LcdSelectFont(1);
-  while ((fd = serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
-    LcdText(1, 2, 100, "Waiting for serial connection...");
   LcdScroll(10);
-  LcdText( 0, 2, 100, "Starting Serial Communication");
+  LcdSelectFont(1);
+  LcdText( 0, 2, 100, "Start serial Communication");
 
   initSensor();
-  for (i = 0; i < OUTPUT_PORT_MAX; i++) setSensorPort(i, TOUCH, 0);  // serial_readで個数指定できるならしとく
+  for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
-  uint8_t serial_receiver[16];
-  int i;
-  while (i = 0; i < 500; i++) {
-    serial_write(fd, 0xff);
-    usleep(500000);
-    int j;
-    for (j = 0; j < 4; j++) serial_receiver[j] = serial_read(fd);
-
-    if (serial_receiver[0] == 0x0f) {  // for sensor
-      uint8_t sensor_byte = 0x00;
-      for (i = 0; i < INPUT_PORT_MAX; i++) sensor_byte |= (getSensor(i) << i);
-      serial_write(fd, sensor_byte);
-    }
-    else if (serial_receiver[0] == 0xf0) {  // for motor
-      for (i = 0; i < 4; i++) serial_receiver[i] = serial_read(fd);
-      OnFwdEx(serial_receiver[1], (char)serial_receiver[2], 0);
-      Wait(serial_receiver[3]);
-      Off(serial_receiver[1]);
-    }
-    else if (serial_receiver[0] == 0xff) break; // for end
-    
-    sprintf(disp, "%d %d", i, serial_receiver[0]);
+  for (i = 0; i < 10000; i++) {
+    tmp = serial_read(fd);
+    sensor_data = 0;
+    for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
+    serial_write(fd, sensor_data);
+    sprintf(disp, "%d:data=%d:tmp=%d", i, sensor_data, tmp);
     LcdScroll(10);
-    LcdText( 1, 2, 100, disp);    
-    usleep(500);
+    LcdText( 1, 2, 100, disp);
+    usleep(1000);
   }
   closeSensor();
   return 0;

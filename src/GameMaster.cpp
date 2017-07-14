@@ -34,7 +34,9 @@ Task GameMaster::task_op()
 Task GameMaster::task_select()
 {
   if (!(turn % 2)) {
-    select_x_ = body.get_sensor();
+    int pushed_sensor = 0;
+    while (!(pushed_sensor = body_.get_sensor())) ;
+    select_x_ = pushed_sensor;
   }
   else {
     seeker = new HandSeeker();

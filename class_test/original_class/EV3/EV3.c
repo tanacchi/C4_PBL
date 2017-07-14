@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
   if ((fd = serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
     sprintf(disp, "Waiting for serial connection...\n");
     usleep(500000);
-    exit -1;
+    exit(-1);
   }
   LcdInit();
   LcdRefresh();
@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
   for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
   for (i = 0; i < 10000; i++) {
-    tmp = serial_read(fd);
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     serial_write(fd, sensor_data);

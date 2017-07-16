@@ -2,7 +2,6 @@
 #define GAME_MASTER_H_
 
 #include "VirtualPlate.hpp"
-#include "BodyController.hpp"
 #include "HandSeeker.hpp"
 
 enum class Task {
@@ -24,7 +23,6 @@ private:
   GameMaster(const GameMaster& src);
   const GameMaster& operator=(const GameMaster& src);
   VirtualPlate plate_;
-  BodyController body_;
   HandSeeler* seeker_;
   int turn_;
   int select_x_;

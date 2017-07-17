@@ -26,11 +26,9 @@ int analogToCentimeter(int analogValue);
 
 int main(int argc, char *argv[]) {
   int fd = -1;
-  uint8_t rcvByte[16];
-  int data;
+  unsigned char sensor_data;
   int i, j;
   char disp[64];
-  int is_touched = 0;
   OutputInit();
   while ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0)
     sprintf(disp, "Waiting for serial connection...\n");
@@ -41,24 +39,17 @@ int main(int argc, char *argv[]) {
   LcdText( 0, 2, 100, "Sart Serial Communication");
 
   initSensor();
-  setSensorPort(CH_1,TOUCH, 0);
+  for (j = 0; j < 4; j++) setSensorPort(j,TOUCH, 0);
 
-  for (i = 0; i < 500; i++) {
-    Serial_write(fd, getSensor(CH_1));
+  for (i = 0; i < 10000; i++) {
+    sensor_data = 0x00;
+    for (j = 0; j < 4; j++) sensor_data |= (getSensor(i) << i);
+    Serial_write(fd, sensor_data);
     usleep(500000);
-    for (j = 0; j < 4; j++) rcvByte[j] = Serial_read(fd);
-    data = (int)( (((int)rcvByte[1]) << 8) | ((int)rcvByte[2]) );
-    
-    printf("%d\n", data);
-    sprintf(disp, "%d %d", i, data);
+    sprintf(disp, "%d %d", i, sensor_data);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
     
-    if (i%100) {
-      OnFwdEx(OUT_B,70,0); 
-      Wait(100); 
-      Off(OUT_B); 
-    }
     usleep(500);
   }
   closeSensor();
@@ -68,27 +59,18 @@ int main(int argc, char *argv[]) {
 int Serial_begin(int brate, char* devicePath) {
   int fd;
   struct termios newTermio;
-  // open the device.
   fd = open(devicePath, O_RDWR | O_NOCTTY);
   if (fd < 0) {
-    // failed to open device.
     perror(devicePath);
     exit(-1);
   }
-  // get original setting and keep it.
   tcgetattr(fd, &oldTermio);
-  // Initialize new_term_io' control code.
   newTermio.c_iflag = 0;
   newTermio.c_oflag = 0;
   newTermio.c_cflag = 0;
   newTermio.c_lflag = 0;
   newTermio.c_line = 0;
   memset(newTermio.c_cc, '\0', sizeof(newTermio.c_cc));
-  // Configure port.
-  // B9600 = 9600bps(default)
-  // CS8 = 8bit, no parity, 1 stopbit
-  // CLOCAL = local(non modem control)
-  // CREAD = enable read charactor
   switch (brate) {
   case 300:
     newTermio.c_cflag = B300 | CS8 | CLOCAL | CREAD;
@@ -121,23 +103,14 @@ int Serial_begin(int brate, char* devicePath) {
     newTermio.c_cflag = B9600 | CS8 | CLOCAL | CREAD;
     break;
   }
-  // Setting parity error is ignore.
   newTermio.c_iflag = IGNPAR;
-  // Raw mode output.
   newTermio.c_oflag = 0;
-  // Setting input mode. non-canonical, no echo,
   newTermio.c_lflag = 0;
-  // inter-character timer
   newTermio.c_cc[VTIME] = 0;
-  // Read block still received one char.
   newTermio.c_cc[VMIN] = 1;
-  // Clear modem line.
   tcflush(fd, TCIFLUSH);
-  // Apply new configure.
   tcsetattr(fd, TCSANOW, &newTermio);
-  // Wait.
   sleep(3);
-  // Return file descriptor.
   return (fd);
 }
 

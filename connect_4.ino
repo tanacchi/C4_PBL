@@ -5,6 +5,8 @@ Task task = Task::Init;
 
 void setup()
 { // 最初の設定とか
+  Serial.begin(9600);
+  delay(2000);
 }
 
 void loop()

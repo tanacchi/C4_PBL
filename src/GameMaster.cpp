@@ -36,7 +36,7 @@ Task GameMaster::task_select()
   if (!(turn % 2)) {
     int pushed_sensor = 0;
     while (!(pushed_sensor = body_.get_sensor())) ;
-    select_x_ = pushed_sensor;
+    select_x_ = pushed_sensor - 1;
   }
   else {
     seeker = new HandSeeker();
@@ -49,7 +49,16 @@ Task GameMaster::task_select()
 Task GameMaster::task_put()
 {
   plate_.insert(select_x_);
-  body_.drop_stone(select_x_);
+  //  body_.drop_stone(select_x_);
+  switch (select_x_) {
+    // use motor series
+  case 0: break;
+  case 1: break;
+  case 2: break;
+  case 3: break;
+  case 4: break;
+  case 5: break;
+  }
   return Task::Judge;
 }
 

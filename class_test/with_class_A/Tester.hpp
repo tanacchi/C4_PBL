@@ -4,7 +4,7 @@
 
 class Tester {
 public:
-  Tester();
+  Tester(int cycle = 9600);
   ~Tester();
   int get_sensor();
   void run_motor(int);

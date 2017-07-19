@@ -1,6 +1,6 @@
 #include "Tester.hpp"
 
-Tester tester;
+Tester tester(9600);
 
 // sensor1 << EV3     CH_1
 // sensor4 << Shileld SH_BAS1
@@ -16,5 +16,5 @@ void loop() {
   Serial.write(0x09);
  // while (!(sensor = tester.get_sensor())) ;
   if (sensor == 5) tester.run_motor(1);
-  if (sensor == 6) tester.run_motor(0);
+  if (sensor == 6) tester.run_motor(2);
 }

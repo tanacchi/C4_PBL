@@ -1,6 +1,6 @@
 #include "Tester.hpp"
 
-Tester::Tester()
+Tester::Tester(int cycle)
   : evshield(0x34, 0x36)
 {
   evshield.init(SH_HardwareI2C);

@@ -25,12 +25,12 @@ int select_x;
 
 void setup()
 { // 最初の設定とか
-turn  = 1;
-task = TaskInit;
-select_x = -1;
-for (int i = 0; i < 2; i++) shield_sensor[i].init(&evshield, i);
-Serial.begin(9600);
-delay(2000);
+  turn  = 1;
+  task = TaskInit;
+  select_x = -1;
+  for (int i = 0; i < 2; i++) shield_sensor[i].init(&evshield, i);
+  Serial.begin(9600);
+  delay(2000);
 }
 
 void loop()
@@ -42,13 +42,20 @@ void loop()
 int run(int task)
 {
   switch (task) {
-  case TaskInit:   return task_init();
-  case TaskOp:     return task_op();
-  case TaskSelect: return task_select();
-  case TaskPut:    return task_put();
-  case TaskJudge:  return task_judge();
-  case TaskEd:     return task_ed();
-  default:         return TaskClose;
+  case TaskInit:   
+    return task_init();
+  case TaskOp:     
+    return task_op();
+  case TaskSelect: 
+    return task_select();
+  case TaskPut:    
+    return task_put();
+  case TaskJudge:  
+    return task_judge();
+  case TaskEd:     
+    return task_ed();
+  default:         
+    return TaskClose;
   }
 }
 
@@ -80,28 +87,28 @@ int task_select()
 int task_put()
 {
   plate_.insert(select_x);
-      // evshield.bank_a.motorRunDegrees(
-      //     SH_Motor_1,
-      //     SH_Direction_Forward,
-      //     1000,
-      //     60,
-      //     SH_Completion_Wait_For,
-      //     SH_Next_Action_BrakeHold);
-      //   delay(1000);    evshield.bank_a.motorRunDegrees(
-      //     SH_Motor_1,
-      //     SH_Direction_Forward,
-      //     1000,
-      //     60,
-      //     SH_Completion_Wait_For,
-      //     SH_Next_Action_BrakeHold);
-      //   delay(1000);    evshield.bank_a.motorRunDegrees(
-      //     SH_Motor_1,
-      //     SH_Direction_Forward,
-      //     1000,
-      //     60,
-      //     SH_Completion_Wait_For,
-      //     SH_Next_Action_BrakeHold);
-      //   delay(1000);
+  // evshield.bank_a.motorRunDegrees(
+  //     SH_Motor_1,
+  //     SH_Direction_Forward,
+  //     1000,
+  //     60,
+  //     SH_Completion_Wait_For,
+  //     SH_Next_Action_BrakeHold);
+  //   delay(1000);    evshield.bank_a.motorRunDegrees(
+  //     SH_Motor_1,
+  //     SH_Direction_Forward,
+  //     1000,
+  //     60,
+  //     SH_Completion_Wait_For,
+  //     SH_Next_Action_BrakeHold);
+  //   delay(1000);    evshield.bank_a.motorRunDegrees(
+  //     SH_Motor_1,
+  //     SH_Direction_Forward,
+  //     1000,
+  //     60,
+  //     SH_Completion_Wait_For,
+  //     SH_Next_Action_BrakeHold);
+  //   delay(1000);
   return TaskJudge;
 }
 
@@ -121,17 +128,19 @@ int task_ed()
 
 int get_sensor()
 {
-int sensor_data = 0;
-sensor_data |= Serial.read();
+  int sensor_data = 0;
+  sensor_data |= Serial.read();
+  dalay(500);
   for (int i = 0; i < 2; i++) sensor_data |= (shield_touch[i].isPressed() << i+4);
   for (int i = 0; i < 6; i++)
-  if (sensor_data = get_two_pow(i)) return i+1;
+    if (sensor_data = get_two_pow(i)) return i+1;
   return 0;
 }
 
 int get_two_pow(int src)
 {
-int dest = 1;
-for (int i = 0; i < src; i++) dest *= 2;
-return dest;
+  int dest = 1;
+  for (int i = 0; i < src; i++) dest *= 2;
+  return dest;
 }
+

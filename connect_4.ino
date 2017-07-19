@@ -20,7 +20,7 @@ const int TaskClose  = 6;
 int task = TaskInit;
 
 VirtualPlate plate;
-
+HandSeeker* seeker;
 
 int turn = 1;
 unsigned int select_x = -1;
@@ -50,20 +50,20 @@ void loop()
 int run(int task)
 {
   switch (task) {
-    case TaskInit:
-      return task_init();
-    case TaskOp:
-      return task_op();
-    case TaskSelect:
-      return task_select();
-    case TaskPut:
-      return task_put();
-    case TaskJudge:
-      return task_judge();
-    case TaskEd:
-      return task_ed();
-    default:
-      return TaskClose;
+  case TaskInit:
+    return task_init();
+  case TaskOp:
+    return task_op();
+  case TaskSelect:
+    return task_select();
+  case TaskPut:
+    return task_put();
+  case TaskJudge:
+    return task_judge();
+  case TaskEd:
+    return task_ed();
+  default:
+    return TaskClose;
   }
 }
 
@@ -79,18 +79,16 @@ int task_op()
 
 int task_select()
 {
-//  static int cpu_hand = 0;
-//  select_x = -1;
-//  if (turn % 2) {
-//    while ((select_x = get_sensor()) == 0);
-//    delay(1000);
-//    select_x--;
-//  }
-//  else {
-//    cpu_hand = (++cpu_hand % 6);
-//    select_x = cpu_hand;
-//  }
-select_x = 3;
+  select_x = -1;
+  if (turn % 2) {
+    while ((select_x = get_sensor()) == 0);
+    select_x--;
+  }
+  else {
+    seeker = new HandSeeker(2);
+    select_x = (*seeker)(plate);
+    delete seeker;
+  }
   return (plate.is_valid_hand(select_x)) ? TaskPut : TaskSelect;
 }
 
@@ -98,83 +96,83 @@ int task_put()
 {
   plate.insert(select_x);
   evshield.bank_a.motorRunDegrees(
-    SH_Motor_1,
-    (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
-    30,
-    100,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
+  SH_Motor_1,
+  (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
+  30,
+  100,
+  SH_Completion_Wait_For,
+  SH_Next_Action_Brake);
   delay(100);
 
   switch (select_x) {
-    case 0:
-      evshield.bank_a.motorRunRotations(
-        SH_Motor_2,
-        SH_Direction_Forward,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+  case 0:
+    evshield.bank_a.motorRunRotations(
+    SH_Motor_2,
+    SH_Direction_Forward,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
-    case 1:
-      evshield.bank_a.motorRunRotations(
-        SH_Motor_2,
-        SH_Direction_Reverse,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+    break;
+  case 1:
+    evshield.bank_a.motorRunRotations(
+    SH_Motor_2,
+    SH_Direction_Reverse,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
-    case 2:
-      evshield.bank_b.motorRunRotations(
-        SH_Motor_1,
-        SH_Direction_Forward,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+    break;
+  case 2:
+    evshield.bank_b.motorRunRotations(
+    SH_Motor_1,
+    SH_Direction_Forward,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
-    case 3:
-      evshield.bank_b.motorRunRotations(
-        SH_Motor_1,
-        SH_Direction_Reverse,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+    break;
+  case 3:
+    evshield.bank_b.motorRunRotations(
+    SH_Motor_1,
+    SH_Direction_Reverse,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
-    case 4:
-      evshield.bank_b.motorRunRotations(
-        SH_Motor_2,
-        SH_Direction_Forward,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+    break;
+  case 4:
+    evshield.bank_b.motorRunRotations(
+    SH_Motor_2,
+    SH_Direction_Forward,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
-    case 5:
-      evshield.bank_b.motorRunRotations(
-        SH_Motor_2,
-        SH_Direction_Reverse,
-        30,
-        1,
-        SH_Completion_Wait_For,
-        SH_Next_Action_Brake);
-      delay(100);
+    break;
+  case 5:
+    evshield.bank_b.motorRunRotations(
+    SH_Motor_2,
+    SH_Direction_Reverse,
+    30,
+    1,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
+    delay(100);
 
-      break;
+    break;
   }
- return TaskJudge;
+  return TaskJudge;
 }
 
 int task_judge()
@@ -206,4 +204,5 @@ int get_two_pow(int src)
   for (int i = 0; i < src; i++) dest *= 2;
   return dest;
 }
+
 

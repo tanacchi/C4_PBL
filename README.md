@@ -8,7 +8,11 @@ Elements | Description
 --- | ---
 VirtualPlate | ゲームの進行状況を把握するための仮想のゲーム盤
 HandSeeker | コンピューターのために有効打を探して教えてくれる子
-BodyController | EV3shieldのライブラリ関係を統括してくれる子
-Player | プレイヤーの操作を管轄してくれる子
-HumanPlayer & ComputerPlayer | 同じプレイヤーでも、人とコンピューターでは振る舞いをしてくれる。（ポリモーフィズムでググッてね）
-GameMaster | ソフト・ハード両方を統括して、ゲーム全体の進行をしてくれる子
+
+## Check List
+[] とりあえずゲーム進行に合わせて動くか
+[] EV3Shield側からデータを送信してプログラム終了の合図が出せるか(どっちのターンとかもわかると良いね)
+[] BodyControlerを実装できるか
+[] GameMasterを再び構築できるか
+[] その他リファクタリング
+

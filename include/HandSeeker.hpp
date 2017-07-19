@@ -4,32 +4,29 @@
 #include "../include/VirtualPlate.hpp"
 
 class HandList {
-  int position;
-  double score;
- public:
+public:
   HandList();
-  void set_position(int x);
+  HandList(const HandList& src);
+  int position_;
+  float score_;
 };
 
 class HandSeeker {
-  VirtualPlate myplate;
-  HandSeeker* sub;
-  int dist_x;   // <- size_t or unsigned ??
-  HandList* hand_list;
-  /* int dist_x, dist_y; */
-  /* std::mt19937 rand_pos; */
-  /* std::vector<StoneScoreList> score_list; */
-  /* BoardMaster virtual_board; */
-  /* int mydepth; */
-  /* OthelloAI* subAI; */
-  /* int serial_num; */
-  /* int branch; */
  public:
+  HandSeeker(int max_depth = 5);
   HandSeeker(VirtualPlate game_plate);
   HandSeeker(const HandSeeker& src);
   const HandSeeker& operator=(const HandSeeker& src);
-  int get_conclusion() const;
-  void record_list();
+  int operator()(VirtualPlate game_plate); 
+  float get_list_score();
+  float evaluate_plate();
+private:
+  VirtualPlate myplate_;
+  HandSeeker* sub_;
+  Stone mystone_;
+  HandList hand_list_[6];
+  int max_depth_;
+  int mydepth_;
 };
 
 #endif // HAND_SEEKER_H_

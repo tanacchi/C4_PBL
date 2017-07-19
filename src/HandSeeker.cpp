@@ -12,11 +12,11 @@ HandList::HandList(const HandList& src)
 {
 }
 
-HandSeeker::HandSeeker()
+HandSeeker::HandSeeker(int max_depth)
   : myplate_(),
     sub_ {0},
     mystone_{Stone::Space},
-    max_depth_ {5},
+    max_depth_ {max_depth},
     mydepth_ {0}
 {
   for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;

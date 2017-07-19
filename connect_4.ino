@@ -20,7 +20,7 @@ const int TaskClose  = 6;
 int task = TaskInit;
 
 VirtualPlate plate;
-HandSeeeker* seeker;
+
 
 int turn = 1;
 unsigned int select_x = -1;
@@ -43,163 +43,141 @@ void setup()
 
 void loop()
 {
-  if (Serial.available() > 0) {
-    Serial.write(receive_buff);
-    receive_buff = 0;
-    if ((receive_buff = Serial.read()) != receive_data) {
-      receive_data = receive_buff;
-      if (receive_data == 1) {
-        evshield.bank_a.motorRunDegrees(
-        SH_Motor_1,
-        SH_Direction_Forward,
-        1000,
-        60,
-        SH_Completion_Wait_For,
-        SH_Next_Action_BrakeHold);
-        delay(1000);
-      }
-      else if (receive_data == 2) {
-        evshield.bank_a.motorRunDegrees(
-        SH_Motor_2,
-        SH_Direction_Reverse,
-        1000,
-        60,
-        SH_Completion_Wait_For,
-        SH_Next_Action_BrakeHold);
-        delay(1000);
-      }
-    }
-  }
+  if (task != TaskClose) task = run(task);
+  else exit(1);
 }
 
 int run(int task)
 {
   switch (task) {
-  case TaskInit:
-    return task_init();
-  case TaskOp:
-    return task_op();
-  case TaskSelect:
-    return task_select();
-  case TaskPut:
-    return task_put();
-  case TaskJudge:
-    return task_judge();
-  case TaskEd:
-    return task_ed();
-  default:
-    return TaskClose;
+    case TaskInit:
+      return task_init();
+    case TaskOp:
+      return task_op();
+    case TaskSelect:
+      return task_select();
+    case TaskPut:
+      return task_put();
+    case TaskJudge:
+      return task_judge();
+    case TaskEd:
+      return task_ed();
+    default:
+      return TaskClose;
   }
 }
 
-int task_init() 
+int task_init()
 {
   return TaskOp;
 }
 
-int task_op() 
+int task_op()
 {
   return TaskSelect;
 }
 
-int task_select() 
+int task_select()
 {
-  if (turn % 2) {
-    while ((select_x = get_sensor()) == 0) ;
-    select_x--;  
-  }
-  else {
-    seeker = new HandSeeker();
-    select_x = (*seeker)(plate);
-    delete seeker;
-  }
+//  static int cpu_hand = 0;
+//  select_x = -1;
+//  if (turn % 2) {
+//    while ((select_x = get_sensor()) == 0);
+//    delay(1000);
+//    select_x--;
+//  }
+//  else {
+//    cpu_hand = (++cpu_hand % 6);
+//    select_x = cpu_hand;
+//  }
+select_x = 3;
   return (plate.is_valid_hand(select_x)) ? TaskPut : TaskSelect;
 }
 
-int task_put() 
+int task_put()
 {
   plate.insert(select_x);
   evshield.bank_a.motorRunDegrees(
-  SH_Motor_1,
-  (turn % 2 ? SH_Direction_Forward : SH_Direction_Reverse),
-  30,
-  100,
-  SH_Completion_Wait_For,
-  SH_Next_Action_Brake);
+    SH_Motor_1,
+    (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
+    30,
+    100,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
   delay(100);
 
   switch (select_x) {
-  case 0:
-    evshield.bank_a.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+    case 0:
+      evshield.bank_a.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 1: 
-    evshield.bank_a.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 1:
+      evshield.bank_a.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 2: 
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_1,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 2:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_1,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 3:  
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_1,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 3:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_1,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 4:
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 4:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 5:   
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 5:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
+      break;
   }
-
+ return TaskJudge;
 }
 
-int task_judge() 
+int task_judge()
 {
   if (plate.is_game_finish()) return TaskEd;
   else if (plate.can_continue()) return TaskEd;
@@ -208,19 +186,24 @@ int task_judge()
   return TaskSelect;
 }
 
-int task_ed() 
+int task_ed()
 {
   return TaskClose;
 }
 
-int get_sensor() 
+int get_sensor()
 {
   receive_data = Serial.read();
-  for (int i = 0; i < 2; i++) receive_data |= (shield_sensor[i].isPressed() << i);
-  for (int i = 0; i < 6; i++) 
+  for (int i = 0; i < 2; i++) receive_data |= (shield_sensor[i].isPressed() << i + 4);
+  for (int i = 0; i < 6; i++)
     if (receive_data == get_two_pow(i)) return i + 1;
   return 0;
 }
 
-
+int get_two_pow(int src)
+{
+  int dest = 1;
+  for (int i = 0; i < src; i++) dest *= 2;
+  return dest;
+}
 

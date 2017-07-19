@@ -174,7 +174,7 @@ int task_put()
 
       break;
   }
-
+ return TaskJudge;
 }
 
 int task_judge()

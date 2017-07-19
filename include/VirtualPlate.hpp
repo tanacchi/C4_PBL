@@ -33,7 +33,7 @@ class VirtualPlate {
   bool is_game_finish() const;
   int get_length(int x, int y, int dx, int dy) const;
   bool is_valid_hand(int x) const;
-  friend void show(VirtualPlate game_plate);
+  Stone get_active_stone() const;
 };
 
 #endif // VIRTUAL_PLATE_H_

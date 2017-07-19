@@ -15,6 +15,6 @@ void loop() {
   int sensor = tester.get_sensor();
   Serial.write(0x09);
  // while (!(sensor = tester.get_sensor())) ;
-  if (sensor == 5) tester.run_motor(1);
-  if (sensor == 6) tester.run_motor(2);
+  if (sensor == 1) tester.run_motor(1);
+  if (sensor == 2) tester.run_motor(2);
 }

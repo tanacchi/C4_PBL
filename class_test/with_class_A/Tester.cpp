@@ -8,6 +8,8 @@ Tester::Tester(int cycle)
   shield_touch[0].init(&evshield, SH_BAS1);
   shield_touch[1].init(&evshield, SH_BAS2);
   evshield.bank_a.motorReset();
+  Serial.begin(cycle);
+  delay(2000);
 }
 
 Tester::~Tester()

@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
   for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
   for (i = 0; i < 10000; i++) {
-  tmp = Serial_read(fd);
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     Serial_write(fd, sensor_data);

@@ -52,7 +52,6 @@ int main(int argc, char *argv[]) {
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     Serial_write(fd, sensor_data);
-    usleep(5000);
     sprintf(disp, "%d:data=%d:tmp=%d", i, sensor_data, tmp);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);

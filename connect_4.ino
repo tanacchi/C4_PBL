@@ -79,24 +79,19 @@ int task_op()
 
 int task_select()
 {
-  byte new_data, prev_data = 0x00;
-  //  if (turn % 2) {
-  //    while ((select_x = get_sensor()) == 0);
-  //    select_x--;
-  //  }
-  //  else {
-  //    seeker = new HandSeeker(2);
-  //    select_x = (*seeker)(plate);
-  //    delete seeker;
-  //  }
-  new_data = get_sensor();
-  if (new_data == prev_data) {
+  if (turn % 2) {
+    byte new_data, prev_data = 0x00;
+    new_data = get_sensor();
+    if (new_data == prev_data) { prev_data = new_data; return TaskSelect; }
     prev_data = new_data;
-    return TaskSelect;
+    select_x = new_data - 1;
   }
-  select_x = prev_data = new_data;
+  else {
+    seeker = new HandSeeker(2);
+    select_x = (*seeker)(plate);
+    delete seeker;
+  }
   delay(1000);
-  select_x--;
   return (plate.is_valid_hand(select_x)) ? TaskPut : TaskSelect;
 }
 

@@ -72,8 +72,8 @@ int task_init()
 
 int task_op()
 {
-  Serial.write(0x00);
   turn++;
+  Serial.write((turn % 2) ? 0x01 : 0x02);
   return TaskSelect;
 }
 

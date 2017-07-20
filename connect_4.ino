@@ -22,7 +22,7 @@ int task = TaskInit;
 VirtualPlate plate;
 HandSeeker* seeker;
 
-int turn = 0;
+unsigned char turn = 0;
 unsigned int select_x = -1;
 
 byte buff;
@@ -73,7 +73,7 @@ int task_init()
 int task_op()
 {
   turn++;
-  Serial.write((turn % 2) ? 0x01 : 0x02);
+  Serial.write(turn % 2);
   return TaskSelect;
 }
 
@@ -107,7 +107,7 @@ int task_put()
     SH_Motor_1,
     (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
     30,
-    100,
+    170,
     SH_Completion_Wait_For,
     SH_Next_Action_Brake);
   delay(100);
@@ -117,7 +117,7 @@ int task_put()
       evshield.bank_a.motorRunRotations(
         SH_Motor_2,
         SH_Direction_Forward,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);
@@ -128,7 +128,7 @@ int task_put()
       evshield.bank_a.motorRunRotations(
         SH_Motor_2,
         SH_Direction_Reverse,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);
@@ -139,7 +139,7 @@ int task_put()
       evshield.bank_b.motorRunRotations(
         SH_Motor_1,
         SH_Direction_Forward,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);
@@ -150,7 +150,7 @@ int task_put()
       evshield.bank_b.motorRunRotations(
         SH_Motor_1,
         SH_Direction_Reverse,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);
@@ -161,7 +161,7 @@ int task_put()
       evshield.bank_b.motorRunRotations(
         SH_Motor_2,
         SH_Direction_Forward,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);
@@ -172,7 +172,7 @@ int task_put()
       evshield.bank_b.motorRunRotations(
         SH_Motor_2,
         SH_Direction_Reverse,
-        30,
+        10,
         1,
         SH_Completion_Wait_For,
         SH_Next_Action_Brake);

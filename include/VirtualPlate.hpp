@@ -5,20 +5,15 @@
 #define PLATE_WIDTH  7
 
 enum class Stone {
-  Space,
-  Red,
-  Blue
+	Space,
+	Red,
+	Blue
 };
 
 static const short dx[4] = { 1, 1, 1, 0 };
 static const short dy[4] = {-1, 0, 1, 1 };
 
-class VirtualPlate {
-  /* enum class Stone { */
-  /*   Space, */
-  /*   Red, */
-  /*   Blue */
-  /* }; */
+class VirtualPlate { 
   Stone plate_[PLATE_HEIGHT][PLATE_WIDTH];
   Stone active_stone_;
  public:

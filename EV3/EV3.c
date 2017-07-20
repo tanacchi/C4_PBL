@@ -47,16 +47,21 @@ int main(int argc, char *argv[]) {
 
   for (i = 0; i < 50000; i++) {
     receive_data = Serial_read(fd);
-    if (receive_data == 0xff) break;
+    if (receive_data == 0xff) {
+    sprintf(disp, "See ya !!!!\n");
+    break;
+    }
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     Serial_write(fd, sensor_data);
-    sprintf(disp, "Now, %s turn !!",
-            (receive_data == 0x01) ? "Player 1" : "Player 2");
+    sprintf(disp, "%dturn %d", receive_data, i);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
     usleep(1000);
   }
+  LcdScroll(10);
+  LcdText( 1, 2, 100, disp);
+  usleep(10000);
   closeSensor();
   return 0;
 }

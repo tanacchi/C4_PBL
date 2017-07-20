@@ -72,6 +72,7 @@ int task_init()
 
 int task_op()
 {
+  Serial.write(0x00);
   turn++;
   return TaskSelect;
 }
@@ -192,6 +193,7 @@ int task_judge()
 
 int task_ed()
 {
+  Serial.write(0xff);
   return TaskClose;
 }
 

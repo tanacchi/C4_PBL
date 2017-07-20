@@ -10,14 +10,17 @@ enum class Stone {
   Blue
 };
 
+static const short dx[4] = { 1, 1, 1, 0 };
+static const short dy[4] = {-1, 0, 1, 1 };
+
 class VirtualPlate {
   /* enum class Stone { */
   /*   Space, */
   /*   Red, */
   /*   Blue */
   /* }; */
-  Stone plate[PLATE_HEIGHT][PLATE_WIDTH];
-  Stone active_stone;
+  Stone plate_[PLATE_HEIGHT][PLATE_WIDTH];
+  Stone active_stone_;
  public:
   VirtualPlate();
   VirtualPlate(const VirtualPlate& plate);
@@ -25,14 +28,14 @@ class VirtualPlate {
   ~VirtualPlate() = default;
   void init();
   void copy_plate(const VirtualPlate& src);
-  void insert(int input_x);
-  inline bool can_drop(int x, int y) const;
+  void insert(short input_x);
+  bool can_drop(short x, short y) const;
   void switch_active_stone();
   bool can_continue() const;
-  inline bool is_inside_plate(int x, int y) const;
+  bool is_inside_plate(short x, short y) const;
   bool is_game_finish() const;
-  int get_length(int x, int y, int dx, int dy) const;
-  bool is_valid_hand(int x) const;
+  int get_length(short x, short y, short dx, short dy) const;
+  bool is_valid_hand(short x) const;
   Stone get_active_stone() const;
 };
 

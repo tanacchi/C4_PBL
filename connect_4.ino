@@ -22,23 +22,21 @@ int task = TaskInit;
 VirtualPlate plate;
 HandSeeker* seeker;
 
-int turn = 1;
+int turn = 0;
 unsigned int select_x = -1;
 
-byte receive_data, receive_buff;
+byte buff;
 
 void setup()
 {
   Serial.begin(9600);
   delay(2000);
-  char str[40];
   evshield.init( SH_HardwareI2C );
   evshield.bank_a.motorReset();
   evshield.bank_b.motorReset();
 
-  shield_sensor[0].init(&evshield, SH_BAS1);
-  shield_sensor[1].init(&evshield, SH_BAS2);
-  receive_data = 0x00;
+  shield_sensor[0].init(&evshield, SH_BBS1);
+  shield_sensor[1].init(&evshield, SH_BBS2);
 }
 
 void loop()
@@ -50,20 +48,20 @@ void loop()
 int run(int task)
 {
   switch (task) {
-  case TaskInit:
-    return task_init();
-  case TaskOp:
-    return task_op();
-  case TaskSelect:
-    return task_select();
-  case TaskPut:
-    return task_put();
-  case TaskJudge:
-    return task_judge();
-  case TaskEd:
-    return task_ed();
-  default:
-    return TaskClose;
+    case TaskInit:
+      return task_init();
+    case TaskOp:
+      return task_op();
+    case TaskSelect:
+      return task_select();
+    case TaskPut:
+      return task_put();
+    case TaskJudge:
+      return task_judge();
+    case TaskEd:
+      return task_ed();
+    default:
+      return TaskClose;
   }
 }
 
@@ -74,21 +72,30 @@ int task_init()
 
 int task_op()
 {
+  turn++;
   return TaskSelect;
 }
 
 int task_select()
 {
-  select_x = -1;
-  if (turn % 2) {
-    while ((select_x = get_sensor()) == 0);
-    select_x--;
+  byte new_data, prev_data = 0x00;
+  //  if (turn % 2) {
+  //    while ((select_x = get_sensor()) == 0);
+  //    select_x--;
+  //  }
+  //  else {
+  //    seeker = new HandSeeker(2);
+  //    select_x = (*seeker)(plate);
+  //    delete seeker;
+  //  }
+  new_data = get_sensor();
+  if (new_data == prev_data) {
+    prev_data = new_data;
+    return TaskSelect;
   }
-  else {
-    seeker = new HandSeeker(2);
-    select_x = (*seeker)(plate);
-    delete seeker;
-  }
+  select_x = prev_data = new_data;
+  delay(1000);
+  select_x--;
   return (plate.is_valid_hand(select_x)) ? TaskPut : TaskSelect;
 }
 
@@ -96,81 +103,81 @@ int task_put()
 {
   plate.insert(select_x);
   evshield.bank_a.motorRunDegrees(
-  SH_Motor_1,
-  (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
-  30,
-  100,
-  SH_Completion_Wait_For,
-  SH_Next_Action_Brake);
+    SH_Motor_1,
+    (!(turn % 2) ? SH_Direction_Forward : SH_Direction_Reverse),
+    30,
+    100,
+    SH_Completion_Wait_For,
+    SH_Next_Action_Brake);
   delay(100);
 
   switch (select_x) {
-  case 0:
-    evshield.bank_a.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+    case 0:
+      evshield.bank_a.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 1:
-    evshield.bank_a.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 1:
+      evshield.bank_a.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 2:
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_1,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 2:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_1,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 3:
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_1,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 3:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_1,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 4:
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Forward,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 4:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Forward,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
-  case 5:
-    evshield.bank_b.motorRunRotations(
-    SH_Motor_2,
-    SH_Direction_Reverse,
-    30,
-    1,
-    SH_Completion_Wait_For,
-    SH_Next_Action_Brake);
-    delay(100);
+      break;
+    case 5:
+      evshield.bank_b.motorRunRotations(
+        SH_Motor_2,
+        SH_Direction_Reverse,
+        30,
+        1,
+        SH_Completion_Wait_For,
+        SH_Next_Action_Brake);
+      delay(100);
 
-    break;
+      break;
   }
   return TaskJudge;
 }
@@ -178,10 +185,9 @@ int task_put()
 int task_judge()
 {
   if (plate.is_game_finish()) return TaskEd;
-  else if (plate.can_continue()) return TaskEd;
+  else if (!plate.can_continue()) return TaskEd;
   plate.switch_active_stone();
-  turn++;
-  return TaskSelect;
+  return (get_sensor() == 0) ? TaskOp : TaskJudge;
 }
 
 int task_ed()
@@ -191,10 +197,12 @@ int task_ed()
 
 int get_sensor()
 {
-  receive_data = Serial.read();
-  for (int i = 0; i < 2; i++) receive_data |= (shield_sensor[i].isPressed() << i + 4);
-  for (int i = 0; i < 6; i++)
-    if (receive_data == get_two_pow(i)) return i + 1;
+  if (Serial.available() > 0) {
+    byte receive_data = Serial.read();
+    for (int i = 0; i < 2; i++) receive_data |= (shield_sensor[i].isPressed() << i + 4);
+    for (int i = 0; i < 8; i++)
+      if (receive_data == get_two_pow(i)) return i + 1;
+  }
   return 0;
 }
 

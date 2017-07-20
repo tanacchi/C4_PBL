@@ -44,7 +44,7 @@ void VirtualPlate::insert(short input_x)
     if (!can_drop(input_x, y)) { plate_[y][input_x] = active_stone_; return; }
 }
 
-inline bool VirtualPlate::can_drop(short x, short y) const
+bool VirtualPlate::can_drop(short x, short y) const
 {
   return (y < PLATE_HEIGHT-1) && (plate_[y+1][x] == Stone::Space);
 }
@@ -62,7 +62,7 @@ bool VirtualPlate::can_continue() const
   return false;
 }
 
-inline bool VirtualPlate::is_inside_plate(short x, short y) const
+bool VirtualPlate::is_inside_plate(short x, short y) const
 {
   return (0 <= x && x < PLATE_WIDTH) && (0 <= y && y < PLATE_HEIGHT);
 }

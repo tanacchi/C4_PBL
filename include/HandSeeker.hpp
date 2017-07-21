@@ -7,7 +7,7 @@ class HandList {
 public:
   HandList();
   HandList(const HandList& src);
-  int position_;
+  short position_;
   float score_;
 };
 
@@ -25,8 +25,8 @@ private:
   HandSeeker* sub_;
   Stone mystone_;
   HandList hand_list_[6];
-  int max_depth_;
-  int mydepth_;
+  short max_depth_;
+  short mydepth_;
 };
 
 #endif // HAND_SEEKER_H_

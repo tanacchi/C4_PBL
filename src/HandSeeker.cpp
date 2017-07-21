@@ -1,17 +1,5 @@
 #include "../include/HandSeeker.hpp"
 
-HandList::HandList()
-  : position_ {0},
-    score_ {0}
-{
-}
-
-HandList::HandList(const HandList& src)
-  : position_ {src.position_},
-    score_ {src.score_}
-{
-}
-
 HandSeeker::HandSeeker(int max_depth)
   : myplate_(),
     sub_ {0},

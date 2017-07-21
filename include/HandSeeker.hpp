@@ -3,13 +3,10 @@
 
 #include "../include/VirtualPlate.hpp"
 
-class HandList {
-public:
-  HandList();
-  HandList(const HandList& src);
+typedef struct {
   short position_;
   float score_;
-};
+} HandList;
 
 class HandSeeker {
  public:

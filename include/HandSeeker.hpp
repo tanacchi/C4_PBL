@@ -14,7 +14,7 @@ class HandSeeker {
   HandSeeker(VirtualPlate game_plate);
   HandSeeker(const HandSeeker& src);
   const HandSeeker& operator=(const HandSeeker& src);
-  int operator()(VirtualPlate game_plate); 
+  int get_conclusion(VirtualPlate game_plate); 
   float get_list_score();
   float evaluate_plate();
 private:

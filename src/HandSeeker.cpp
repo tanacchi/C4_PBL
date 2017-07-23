@@ -16,7 +16,7 @@ HandSeeker::HandSeeker(const HandSeeker& src)
   for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
 
-int HandSeeker::operator()(VirtualPlate game_plate)
+int HandSeeker::get_conclusion(VirtualPlate game_plate)
 {
   myplate_ = game_plate;
   get_list_score();

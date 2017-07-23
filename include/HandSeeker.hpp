@@ -10,7 +10,7 @@ typedef struct {
 
 class HandSeeker {
  public:
-  HandSeeker(int max_depth = 5);
+  HandSeeker(int max_depth = 2);
   HandSeeker(VirtualPlate game_plate);
   HandSeeker(const HandSeeker& src);
   const HandSeeker& operator=(const HandSeeker& src);
@@ -20,10 +20,8 @@ class HandSeeker {
 private:
   VirtualPlate myplate_;
   HandSeeker* sub_;
-  Stone mystone_;
   HandList hand_list_[6];
-  short max_depth_;
-  short mydepth_;
+  short depth_;
 };
 
 #endif // HAND_SEEKER_H_

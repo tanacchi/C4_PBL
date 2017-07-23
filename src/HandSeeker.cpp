@@ -1,11 +1,9 @@
 #include "../include/HandSeeker.hpp"
 
-HandSeeker::HandSeeker(int max_depth)
+HandSeeker::HandSeeker(int depth)
   : myplate_(),
     sub_ {0},
-    mystone_{Stone::Space},
-    max_depth_ {max_depth},
-    mydepth_ {0}
+    depth_ {depth}
 {
   for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
@@ -13,9 +11,7 @@ HandSeeker::HandSeeker(int max_depth)
 HandSeeker::HandSeeker(const HandSeeker& src)
   : myplate_ {src.myplate_},
     sub_ {0},
-    mystone_ {src.mystone_},
-    max_depth_ {src.max_depth_},
-    mydepth_ {src.mydepth_}
+    depth_ {src.depth_}
 {
   for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
@@ -23,7 +19,6 @@ HandSeeker::HandSeeker(const HandSeeker& src)
 int HandSeeker::operator()(VirtualPlate game_plate)
 {
   myplate_ = game_plate;
-  mystone_ = myplate_.get_active_stone();
   get_list_score();
   for (int i = 0; i < PLATE_WIDTH; i++) {
     int maximum = i;
@@ -40,11 +35,11 @@ int HandSeeker::operator()(VirtualPlate game_plate)
 
 float HandSeeker::get_list_score()
 {
-  if ((max_depth_ - mydepth_) < 0) return evaluate_plate();
+  if (depth_ < 0) return evaluate_plate();
   for (int i = 0; i < PLATE_WIDTH; i++) {
     if (!myplate_.is_valid_hand(i)) continue;
     sub_ = new HandSeeker(*this);
-    sub_->mydepth_++;
+    sub_->depth_--;
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
     hand_list_[i].score_ = sub_->get_list_score();
@@ -57,18 +52,15 @@ float HandSeeker::get_list_score()
 
 float HandSeeker::evaluate_plate()
 {
-  if (myplate_.get_active_stone() != mystone_) myplate_.switch_active_stone();
   float score = 0.1;
   for (short i = 0; i < 4; i++)
     for (short y = 0; y < PLATE_HEIGHT; y++)
       for (short x = 0; x < PLATE_WIDTH; x++) {
         int length_buff = 0;
         if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3) score += length_buff*300;
-        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 2) score += length_buff*30;
         myplate_.switch_active_stone();
         if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3) score -= length_buff*500;
-        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 2) score -= length_buff*50;
         myplate_.switch_active_stone();
       }
-  return score / mydepth_+1/10;
+  return score / depth_+1/10;
 }

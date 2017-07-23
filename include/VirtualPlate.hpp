@@ -31,7 +31,6 @@ class VirtualPlate {
   bool is_game_finish() const;
   int get_length(short x, short y, short dx, short dy) const;
   bool is_valid_hand(short x) const;
-  Stone get_active_stone() const;
 };
 
 #endif // VIRTUAL_PLATE_H_

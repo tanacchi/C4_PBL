@@ -10,7 +10,7 @@ typedef struct {
 
 class HandSeeker {
 public:
-  HandSeeker();
+  HandSeeker(unsigned short max_depth = 5);
   HandSeeker(const HandSeeker& src);
   ~HandSeeker() = default;
   int get_conclusion(VirtualPlate game_plate);

@@ -9,19 +9,21 @@ typedef struct {
 } HandList;
 
 class HandSeeker {
- public:
-  HandSeeker(int max_depth = 2);
-  HandSeeker(VirtualPlate game_plate);
+public:
+  HandSeeker();
   HandSeeker(const HandSeeker& src);
-  const HandSeeker& operator=(const HandSeeker& src);
-  int get_conclusion(VirtualPlate game_plate); 
+  ~HandSeeker() = default;
+  int get_conclusion(VirtualPlate game_plate);
   float get_list_score();
   float evaluate_plate();
 private:
+  const HandSeeker& operator=(const HandSeeker&);
   VirtualPlate myplate_;
+  HandList hand_list_[PLATE_WIDTH];
   HandSeeker* sub_;
-  HandList hand_list_[6];
-  short depth_;
+  Stone mystone_;
+  const unsigned short max_depth_;
+  unsigned short mydepth_;
 };
 
 #endif // HAND_SEEKER_H_

@@ -4,6 +4,8 @@
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
 
+#include <iostream>
+
 enum class Stone {
 	Space,
 	Red,
@@ -31,6 +33,9 @@ class VirtualPlate {
   bool is_game_finish() const;
   int get_length(short x, short y, short dx, short dy) const;
   bool is_valid_hand(short x) const;
+  Stone get_active_stone() const;
+  char to_char(Stone stone);
+  void show();
 };
 
 #endif // VIRTUAL_PLATE_H_

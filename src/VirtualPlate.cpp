@@ -85,3 +85,25 @@ int VirtualPlate::get_length(short x, short y, short dx, short dy) const
     else break;
   return length;
 }
+
+Stone VirtualPlate::get_active_stone() const
+{
+  return active_stone_;
+}
+
+char VirtualPlate::to_char(Stone stone)
+{
+  return
+    (stone == Stone::Red) ? 'O':
+    (stone == Stone::Blue) ? 'X':
+    ' ';
+}
+
+void VirtualPlate::show()
+{
+  std::cout << "========================================" << std::endl;
+  for (int y = 0; y < PLATE_HEIGHT; std::cout.put('\n'), y++)
+    for (int x = 0; x < PLATE_WIDTH; std::cout.put(' '), x++)
+      std::cout.put(to_char(plate_[y][x]));
+  std::cout << "========================================" << std::endl;
+}

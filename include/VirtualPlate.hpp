@@ -4,8 +4,6 @@
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
 
-#include <iostream>
-
 enum class Stone {
 	Space,
 	Red,

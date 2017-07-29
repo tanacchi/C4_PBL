@@ -1,1 +1,0 @@
-make download  -f"C:\Users\q111026d\Desktop\testA\EV3\EV3.mak" -s > "C:\Users\q111026d\AppData\Local\Temp\temp.log" 2>&1

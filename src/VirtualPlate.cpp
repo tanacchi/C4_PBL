@@ -77,7 +77,7 @@ bool VirtualPlate::is_game_finish() const
   return false;
 }
 
-int VirtualPlate::get_length(short x, short y, short dx, short dy) const
+short VirtualPlate::get_length(short x, short y, short dx, short dy) const
 {
   short length;
   for (length = 1; is_inside_plate(x+dx*length, y+dy*length); length++)

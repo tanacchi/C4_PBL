@@ -1,18 +1,6 @@
 #include "../include/HandSeeker.hpp"
 
-HandList::HandList()
-  : position_ {0},
-    score_ {0}
-{
-}
-
-HandList::HandList(const HandList& src)
-  : position_ {src.position_},
-    score_ {src.score_}
-{
-}
-
-HandSeeker::HandSeeker(int max_depth)
+HandSeeker::HandSeeker(unsigned short max_depth)
   : myplate_(),
     sub_ {0},
     mystone_{Stone::Space},
@@ -32,7 +20,7 @@ HandSeeker::HandSeeker(const HandSeeker& src)
   for (int i = 0; i < PLATE_WIDTH; i++) hand_list_[i].position_ = i;
 }
 
-int HandSeeker::operator()(VirtualPlate game_plate)
+int HandSeeker::get_conclusion(VirtualPlate game_plate)
 {
   myplate_ = game_plate;
   mystone_ = myplate_.get_active_stone();
@@ -47,6 +35,9 @@ int HandSeeker::operator()(VirtualPlate game_plate)
   }
   int best_pos = 0;
   while (!hand_list_[best_pos].score_) best_pos++;
+  for (int i = 0; i < PLATE_WIDTH; i++)
+    std::cout << hand_list_[i].position_ << ' ' << hand_list_[i].score_ << std::endl;
+  std::cout << "best position is " << hand_list_[best_pos].position_ << std::endl;
   return hand_list_[best_pos].position_;
 }
 
@@ -60,6 +51,7 @@ float HandSeeker::get_list_score()
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
     hand_list_[i].score_ = sub_->get_list_score();
+    //    show(sub_->myplate_);
     delete sub_;
   }
   float sum = 0;
@@ -76,10 +68,8 @@ float HandSeeker::evaluate_plate()
       for (short x = 0; x < PLATE_WIDTH; x++) {
         int length_buff = 0;
         if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3) score += length_buff*300;
-        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 2) score += length_buff*30;
         myplate_.switch_active_stone();
         if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3) score -= length_buff*500;
-        if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 2) score -= length_buff*50;
         myplate_.switch_active_stone();
       }
   return score / mydepth_+1/10;

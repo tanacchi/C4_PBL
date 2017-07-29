@@ -73,6 +73,7 @@ int task_init()
 int task_op()
 {
   turn++;
+  plate.switch_active_stone();
   Serial.write(turn % 2);
   return TaskSelect;
 }
@@ -182,7 +183,6 @@ int task_judge()
 {
   if (plate.is_game_finish()) return TaskEd;
   else if (!plate.can_continue()) return TaskEd;
-  plate.switch_active_stone();
   return (get_sensor() == 0) ? TaskOp : TaskJudge;
 }
 

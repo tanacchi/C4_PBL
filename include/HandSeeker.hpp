@@ -13,7 +13,7 @@ public:
   HandSeeker(unsigned short max_depth = 5);
   HandSeeker(const HandSeeker& src);
   ~HandSeeker() = default;
-  int get_conclusion(VirtualPlate game_plate);
+  short get_conclusion(VirtualPlate game_plate);
   float get_list_score();
   float evaluate_plate();
 private:

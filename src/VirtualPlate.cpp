@@ -30,12 +30,12 @@ void VirtualPlate::copy_plate(const VirtualPlate& src)
 {
   for (short i = 0; i < PLATE_HEIGHT; i++)
     for (short j = 0; j < PLATE_WIDTH; j++)
-      this->plate_[i][j] = src.plate_[i][j];
+      plate_[i][j] = src.plate_[i][j];
 }
 
 bool VirtualPlate::is_valid_hand(short x) const
 {
-  return (plate_[0][x] == Stone::Space);
+  return can_drop(x, -1);
 }
 
 void VirtualPlate::insert(short input_x)

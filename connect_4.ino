@@ -89,7 +89,7 @@ int task_select()
   }
   else {
     seeker = new HandSeeker(2);
-    select_x = (*seeker)(plate);
+    select_x = seeker->get_conclusion(plate);
     delete seeker;
   }
   delay(1000);

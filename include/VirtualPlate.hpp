@@ -32,8 +32,6 @@ class VirtualPlate {
   short get_length(short x, short y, short dx, short dy) const;
   bool is_valid_hand(short x) const;
   Stone get_active_stone() const;
-  friend const char* to_char(Stone stone);
-  friend void show(const VirtualPlate& plate);
 };
 
 #endif // VIRTUAL_PLATE_H_

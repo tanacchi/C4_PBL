@@ -56,9 +56,8 @@ void VirtualPlate::switch_active_stone()
 
 bool VirtualPlate::can_continue() const
 {
-  for (short i = 0; i < PLATE_HEIGHT; i++)
-    for (short j = 0; j < PLATE_WIDTH; j++)
-      if (plate_[i][j] == Stone::Space) return true;
+  for (short i = 0; i < PLATE_WIDTH; i++)
+    if (can_drop(i, -1)) return true;
   return false;
 }
 

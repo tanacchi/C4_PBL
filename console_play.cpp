@@ -35,7 +35,7 @@ int main()
         std::cin >> select_x;
       }
       else {
-        seeker = new HandSeeker(6);
+        seeker = new HandSeeker(5);
         select_x = seeker->get_conclusion(plate);
         delete seeker;
       }

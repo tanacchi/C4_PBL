@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/HandSeeker.hpp"
 
 HandSeeker::HandSeeker(unsigned short max_depth)
@@ -36,8 +37,8 @@ short HandSeeker::get_conclusion(VirtualPlate game_plate)
   unsigned char best_pos = 0;
   while (!hand_list_[best_pos].score_) best_pos++;
   for (unsigned char i = 0; i < PLATE_WIDTH; i++)
-  //   std::cout << hand_list_[i].position_ << ' ' << hand_list_[i].score_ << std::endl;
-  // std::cout << "best position is " << hand_list_[best_pos].position_ << std::endl;
+    std::cout << hand_list_[i].position_ << ' ' << hand_list_[i].score_ << std::endl;
+  std::cout << "best position is " << hand_list_[best_pos].position_ << std::endl;
   return hand_list_[best_pos].position_;
 }
 
@@ -51,7 +52,7 @@ float HandSeeker::get_list_score()
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
     hand_list_[i].score_ = sub_->get_list_score();
-    //    show(sub_->myplate_);
+       show(sub_->myplate_);
     delete sub_;
   }
   float sum = 0;

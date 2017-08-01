@@ -88,9 +88,11 @@ int task_select()
     select_x = new_data - 1;
   }
   else {
-    seeker = new HandSeeker(2);
-    select_x = seeker->get_conclusion(plate);
-    delete seeker;
+    //    seeker = new HandSeeker(2);
+    //    select_x = seeker->get_conclusion(plate);
+    //    delete seeker;
+    //
+    select_x = random(0, 6);
   }
   delay(1000);
   return (plate.is_valid_hand(select_x)) ? TaskPut : TaskSelect;

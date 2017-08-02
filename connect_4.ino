@@ -67,6 +67,15 @@ int run(int task)
 
 int task_init()
 {
+  // evshield.bank_a.motorRunDegrees(
+  //   SH_Motor_1,
+  //   SH_Direction_Forward,
+  //   30,
+  //   170,
+  //   SH_Completion_Wait_For,
+  //   SH_Next_Action_Brake);
+  // delay(100);
+
   return TaskOp;
 }
 
@@ -209,5 +218,3 @@ int get_two_pow(int src)
   for (int i = 0; i < src; i++) dest *= 2;
   return dest;
 }
-
-

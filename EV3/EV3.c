@@ -22,9 +22,9 @@ int Serial_begin(int brate, char* devicePath);
 void Serial_end(int fd);
 int Serial_write(int fd, uint8_t pbyte);
 uint8_t Serial_read(int fd);
-int analogToCentimeter(int analogValue);
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   int fd = -1;
   unsigned char sensor_data;
   int i, j;
@@ -32,25 +32,21 @@ int main(int argc, char *argv[]) {
   unsigned char receive_data;
   OutputInit();
   if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
-    sprintf(disp, "Waiting for serial connection...\n");
-    usleep(500000);
-    exit -1;
+    sprintf(disp, "Couldn't start serial connection...\n");
+    exit(-1);
   }
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
   LcdSelectFont(1);
-  LcdText( 0, 2, 100, "Start Serial Communication");
+  LcdText( 0, 2, 100, "Starting Serial Communication");
 
   initSensor();
   for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
   for (i = 0; i < 50000; i++) {
     receive_data = Serial_read(fd);
-    if (receive_data == 0xff) {
-    sprintf(disp, "See ya !!!!\n");
-    break;
-    }
+    if (receive_data == 0xff) { LcdText( 1, 2, 100, "See ya !!!"); break; }
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     Serial_write(fd, sensor_data);
@@ -66,7 +62,8 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int Serial_begin(int brate, char* devicePath) {
+int Serial_begin(int brate, char* devicePath)
+{
   int fd;
   struct termios newTermio;
   fd = open(devicePath, O_RDWR | O_NOCTTY);
@@ -124,20 +121,23 @@ int Serial_begin(int brate, char* devicePath) {
   return (fd);
 }
 
-void Serial_end(int fd) {
+void Serial_end(int fd)
+{
   if (fd >= 0) {
     tcsetattr(fd, TCSANOW, &oldTermio);
     close(fd);
   }
 }
 
-int Serial_write(int fd, uint8_t pbyte) {
+int Serial_write(int fd, uint8_t pbyte)
+{
   ssize_t res;
   res = write(fd, &pbyte, 1);
   return (int)res;
 }
 
-uint8_t Serial_read(int fd) {
+uint8_t Serial_read(int fd)
+{
   uint8_t c;
   read(fd, (char *)&c, 1);
   return c;

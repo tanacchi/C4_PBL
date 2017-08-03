@@ -33,20 +33,15 @@ void VirtualPlate::copy_plate(const VirtualPlate& src)
       plate_[i][j] = src.plate_[i][j];
 }
 
-bool VirtualPlate::is_valid_hand(short x) const
+bool VirtualPlate::can_drop(short x, short y) const
 {
-  return can_drop(x, -1);
+  return (y < PLATE_HEIGHT-1) && (plate_[y+1][x] == Stone::Space);
 }
 
 void VirtualPlate::insert(short input_x)
 {
   for (short y = 0; y < PLATE_HEIGHT; y++)
     if (!can_drop(input_x, y)) { plate_[y][input_x] = active_stone_; return; }
-}
-
-bool VirtualPlate::can_drop(short x, short y) const
-{
-  return (y < PLATE_HEIGHT-1) && (plate_[y+1][x] == Stone::Space);
 }
 
 void VirtualPlate::switch_active_stone()
@@ -83,6 +78,11 @@ short VirtualPlate::get_length(short x, short y, short dx, short dy) const
     if (plate_[y+dy*length][x+dx*length] == active_stone_) continue;
     else break;
   return length;
+}
+
+bool VirtualPlate::is_valid_hand(short x) const
+{
+  return can_drop(x, -1);
 }
 
 Stone VirtualPlate::get_active_stone() const

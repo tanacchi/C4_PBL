@@ -52,7 +52,7 @@ HandSeekerの設計は関数オブジェクトを使いたかったのだが、A
 しかし今まで意識していなかったメモリ節約や通信制御で得られた経験というのもかなり大きい。  
 今後に活かしていこう。
 
-### Special thanks
+## Special thanks
 * EV3テキストプログラミング用のヘッダファイル  
 　[http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html](http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html "花沢研究室")
 * EVShield用のライブラリ  

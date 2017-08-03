@@ -2,21 +2,32 @@
 
 H29前期 実践プログラミングPBL課題用
 
-## ソフトウェア構成（暫定）
+Elements | Description
+--- | ---
+EV3/ | EV3用のソースファイル。
+include/ | クラスオブジェクトのインクルードファイル。
+src/ | クラスオブジェクトのソースファイル。
+.gitignore | github用の設定ファイル。
+README.md | ドキュメント。
+build.sh | ビルドファイル。実行するとターミナル上で動く実行ファイルができる。
+connect_4.ino | Arduino用ソースファイル。
+console_play.cpp | ターミナル上で動かす用のプログラム
+
+## ソフトウェア構成
+本当はオブジェクト指向で設計したかったが  
+シリアル通信が上手くいかなくなったのでやめた
 
 Elements | Description
 --- | ---
 VirtualPlate | ゲームの進行状況を把握するための仮想のゲーム盤
-HandSeeker | コンピューターのために有効打を探して教えてくれる子
+HandSeeker | 有効打を探すオブジェクト
+BodyController | ハードウェア制御用のオブジェクト（実装成らず）
+GameMaster | ゲーム運用のためのオブジェクト（実装成らず）
 
-## Check List
-- [x] とりあえずゲーム進行に合わせて動くか  
-- [ ] その他リファクタリング  
-
-## 動かすための手順
+## 動かすための手順（メンバー用）
 
 1. 学校のパソコン（Windows）を起動・ログインしておく
-2. [EV3Shieldのライブラリ](https://github.com/mindsensors/EVShield "shiled") を**Clone or download**(緑色のボタン)→Download ZIP をクリックしてダウンロード
+2. [EV3Shieldのライブラリ](https://github.com/mindsensors/EVShield "EV3Shiled") を**Clone or download**(緑色のボタン)→Download ZIP をクリックしてダウンロード
 3. 「ダウンロード」フォルダでEVShield-masterを右クリック→全て解凍→エンターキー
 4. 同様に[tanacchi/C4_PBL](https://github.com/tanacchi/C4_PBL "connect_4")からダウンロード→解凍
 5. 解凍した２つのフォルダを Zドライブの方に移動させる
@@ -31,3 +42,20 @@ HandSeeker | コンピューターのために有効打を探して教えてく�
 14. ArduinoをEV3に接続
 15. BricxCCで Compile -> Download and Run
 
+## その他
+HandSeekerの設計は関数オブジェクトを使いたかったのだが  
+Arduinoでサポートされてなかったのでやめた。  
+おそらく動かなかったのも new / delete 演算子がサポートされていなかったから。
+一応使えるようにする方法をあったようだが、時間が足りなさすぎて断念。
+せっかく動かせるようにメモリ管理やり直したのになあ。  
+完成こそしたが腑に落ちない部分もあったというのが正直な所。  
+しかし今まで意識していなかったメモリ節約や通信制御で得られた経験というのもかなり大きい。  
+今後に活かしていこう。
+
+### 今回の作品に使わせていただいたもの
+* EV3テキストプログラミング用のヘッダファイル
+　[http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html](http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html "花沢研究室")
+* EVShield用のライブラリ
+　[https://github.com/mindsensors/EVShield](https://github.com/mindsensors/EVShield "mindsensors/EVShield")
+
+本当にありがとうございました

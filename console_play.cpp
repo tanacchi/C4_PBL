@@ -41,7 +41,7 @@ int main()
         select_x = seeker->get_conclusion(plate);
         delete seeker;
       }
-    } while (!plate.is_valid_hand(select_x));
+    } while (!plate.is_inside_plate(select_x, 0) || !plate.is_valid_hand(select_x));
     plate.insert(select_x);
     show(plate);
     if (plate.is_game_finish()) { std::cout << "FINISH!!" << std::endl; return 0;}

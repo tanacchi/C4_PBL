@@ -12,6 +12,7 @@ README.md | ドキュメント。
 build.sh | ビルドファイル。実行するとターミナル上で動く実行ファイルができる。
 connect_4.ino | Arduino用ソースファイル。
 console_play.cpp | ターミナル上で動かす用のプログラム
+github_url.txt | 管理しているgithubリポジトリのURL
 
 ## ソフトウェア構成
 本当はオブジェクト指向で設計したかったが  

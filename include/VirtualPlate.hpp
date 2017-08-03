@@ -4,7 +4,7 @@
 #define PLATE_HEIGHT 6
 #define PLATE_WIDTH  7
 
-enum class Stone {　　// コマ識別用のデータ型
+enum class Stone {     // コマ識別用のデータ型
 	Space,
 	Red,
 	Blue

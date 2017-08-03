@@ -52,7 +52,7 @@ float HandSeeker::get_list_score()
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
     hand_list_[i].score_ = sub_->get_list_score();
-       show(sub_->myplate_);
+    //show(sub_->myplate_);
     delete sub_;
   }
   float sum = 0;
@@ -73,5 +73,5 @@ float HandSeeker::evaluate_plate()
         if ((length_buff = myplate_.get_length(x, y, dx[i], dy[i])) > 3) score -= length_buff*500;
         myplate_.switch_active_stone();
       }
-  return score / mydepth_+1/10;
+  return score / ((mydepth_+1)*10);
 }

@@ -4,9 +4,9 @@ H29前期 実践プログラミングPBL課題用
 
 Elements | Description
 --- | ---
-EV3/ | EV3用のソースファイル。
-include/ | クラスオブジェクトのインクルードファイル。
-src/ | クラスオブジェクトのソースファイル。
+EV3/ | EV3用のソースファイルを入れてる。
+include/ | クラスオブジェクトのインクルードファイルを入れてる。
+src/ | クラスオブジェクトのソースファイルを入れてる。
 .gitignore | github用の設定ファイル。
 README.md | ドキュメント。
 build.sh | ビルドファイル。実行するとターミナル上で動く実行ファイルができる。
@@ -42,20 +42,19 @@ GameMaster | ゲーム運用のためのオブジェクト（実装成らず）
 14. ArduinoをEV3に接続
 15. BricxCCで Compile -> Download and Run
 
-## その他
-HandSeekerの設計は関数オブジェクトを使いたかったのだが  
-Arduinoでサポートされてなかったのでやめた。  
-おそらく動かなかったのも new / delete 演算子がサポートされていなかったから。
+## 感想
+HandSeekerの設計は関数オブジェクトを使いたかったのだが、Arduinoでサポートされてなかったので出来なかった。  
+おそらく動かなかったのも new / delete 演算子がサポートされていなかったから。  
 一応使えるようにする方法をあったようだが、時間が足りなさすぎて断念。
 せっかく動かせるようにメモリ管理やり直したのになあ。  
 完成こそしたが腑に落ちない部分もあったというのが正直な所。  
 しかし今まで意識していなかったメモリ節約や通信制御で得られた経験というのもかなり大きい。  
 今後に活かしていこう。
 
-### 今回の作品に使わせていただいたもの
-* EV3テキストプログラミング用のヘッダファイル
+### Special thanks
+* EV3テキストプログラミング用のヘッダファイル  
 　[http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html](http://www.mns.kyutech.ac.jp/~hanazawa/education/downloads/index.html "花沢研究室")
-* EVShield用のライブラリ
+* EVShield用のライブラリ  
 　[https://github.com/mindsensors/EVShield](https://github.com/mindsensors/EVShield "mindsensors/EVShield")
 
 本当にありがとうございました

@@ -21,14 +21,12 @@ void show(const VirtualPlate& src)
 
 int main()
 {
-
   VirtualPlate plate;
   HandSeeker* seeker;
   int select_x;
   int turn = 0;
 
   show(plate);
-  
   while (plate.can_continue()) {
     turn++;
     do {
@@ -46,7 +44,6 @@ int main()
     show(plate);
     if (plate.is_game_finish()) { std::cout << "FINISH!!" << std::endl; return 0;}
     plate.switch_active_stone();
-  }
-  
+  } 
   return 0;
 }

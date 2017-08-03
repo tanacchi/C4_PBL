@@ -25,7 +25,7 @@ HandSeeker* seeker;
 unsigned char turn = 0;
 unsigned int select_x = -1;
 
-byte buff;
+byte new_data, prev_data = 0x00;
 
 void setup()
 {
@@ -48,20 +48,13 @@ void loop()
 int run(int task)
 {
   switch (task) {
-    case TaskInit:
-      return task_init();
-    case TaskOp:
-      return task_op();
-    case TaskSelect:
-      return task_select();
-    case TaskPut:
-      return task_put();
-    case TaskJudge:
-      return task_judge();
-    case TaskEd:
-      return task_ed();
-    default:
-      return TaskClose;
+    case TaskInit:   return task_init();
+    case TaskOp:     return task_op();
+    case TaskSelect: return task_select();
+    case TaskPut:    return task_put();
+    case TaskJudge:  return task_judge();
+    case TaskEd:     return task_ed();
+    default:         return TaskClose;
   }
 }
 
@@ -90,7 +83,6 @@ int task_op()
 int task_select()
 {
   if (turn % 2) {
-    byte new_data, prev_data = 0x00;
     new_data = get_sensor();
     if (new_data == prev_data) { prev_data = new_data; return TaskSelect; }
     prev_data = new_data;

@@ -31,32 +31,59 @@ int main(int argc, char *argv[])
   char disp[64];
   unsigned char receive_data;
   OutputInit();
-  if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {
+  if ((fd = Serial_begin(BAUDRATE, MODEMDEVICE)) < 0) {       // 接続出来なかったらエラーを履いて終了
     sprintf(disp, "Couldn't start serial connection...\n");
     exit(-1);
   }
+
+  /*
+    表示系の初期化等
+   */
   LcdInit();
   LcdRefresh();
   LcdScroll(10);
   LcdSelectFont(1);
   LcdText( 0, 2, 100, "Starting Serial Communication");
 
+  
+  /*
+    センサーの初期化と設定
+   */
   initSensor();
   for (i = 0; i < 4; i++) setSensorPort(i,TOUCH, 0);
 
-  for (i = 0; i < 50000; i++) {
+  
+  /*
+    終了のシグナルが送られてくるまで無限ループ
+   */
+  while (1) {
     receive_data = Serial_read(fd);
-    if (receive_data == 0xff) { LcdText( 1, 2, 100, "See ya !!!"); break; }
+    if (receive_data == 0xff) break; // 終了のシグナルが送られたらループを抜ける
+
+    /*
+      byteと同じ8bit変数に4つ分のセンサー情報を
+      ビット演算を利用して格納
+      そして送信
+     */    
     sensor_data = 0;
     for (j = 0; j < 4; j++) sensor_data |= (getSensor(j) << j);
     Serial_write(fd, sensor_data);
+
+    /*
+      画面表示はテスト用のまま
+      変更する時間がなかった
+     */
     sprintf(disp, "%dturn %d", receive_data, i);
     LcdScroll(10);
     LcdText( 1, 2, 100, disp);
     usleep(1000);
   }
-  LcdScroll(10);
-  LcdText( 1, 2, 100, disp);
+
+  
+  /*
+    ループを抜けたらセンサーを閉じて終了
+   */
+  LcdText( 1, 2, 100, "See ya !!!"); // 別れのあいさつ
   usleep(10000);
   closeSensor();
   return 0;

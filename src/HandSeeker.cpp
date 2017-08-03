@@ -1,6 +1,11 @@
 #include <iostream>
 #include "../include/HandSeeker.hpp"
 
+/*
+  ６０行目のコメントを外すと
+  検索している様子が見られます
+*/
+
 HandSeeker::HandSeeker(unsigned short max_depth)
   : myplate_(),
     sub_ {0},
@@ -52,7 +57,7 @@ float HandSeeker::get_list_score()
     sub_->myplate_.insert(i);
     sub_->myplate_.switch_active_stone();
     hand_list_[i].score_ = sub_->get_list_score();
-    //show(sub_->myplate_);
+    // show(sub_->myplate_);
     delete sub_;
   }
   float sum = 0;

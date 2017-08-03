@@ -11,6 +11,7 @@ const char* to_char(Stone stone)
 
 void show(const VirtualPlate& src)
 {
+  std::cout << " １ ２ ３ ４ ５ ６ ７" << std::endl;
   std::cout << "=====================" << std::endl;
   for (int y = 0; y < PLATE_HEIGHT; std::cout << "\n", y++)
     for (int x = 0; x < PLATE_WIDTH; std::cout << "　", x++)
@@ -33,6 +34,7 @@ int main()
     do {
       if (turn%2){
         std::cin >> select_x;
+        select_x--;
       }
       else {
         seeker = new HandSeeker(5);
